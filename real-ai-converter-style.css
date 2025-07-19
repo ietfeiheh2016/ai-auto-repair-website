@@ -255,6 +255,9 @@ body {
     padding: 2rem;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.5);
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 .ai-interface {
@@ -262,6 +265,8 @@ body {
     grid-template-columns: 1fr 300px;
     gap: 2rem;
     margin-bottom: 2rem;
+    width: 100%;
+    max-width: 100%;
 }
 
 /* Real Chat Container */
@@ -271,6 +276,9 @@ body {
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     border: 2px solid #e5e7eb;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
 }
 
 .chat-header-real {
@@ -1252,14 +1260,49 @@ body {
 }
 
 /* Responsive Design */
+@media (max-width: 1024px) {
+    .hero-content {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        text-align: center;
+    }
+    
+    .ai-interface {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .real-features-panel {
+        order: -1;
+    }
+    
+    .pricing-card.premium {
+        transform: scale(1);
+    }
+}
+
 @media (max-width: 768px) {
+    .container {
+        padding: 0 0.75rem;
+    }
+    
+    .real-ai-hero {
+        padding: 2rem 0 4rem;
+    }
+    
     .hero-content {
         grid-template-columns: 1fr;
         gap: 2rem;
+        text-align: center;
     }
     
     .hero-text h1 {
-        font-size: 2.5rem;
+        font-size: 2rem;
+        line-height: 1.2;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
     }
     
     .google-features {
@@ -1267,26 +1310,187 @@ body {
         gap: 1rem;
     }
     
+    .google-feature {
+        flex-direction: column;
+        text-align: center;
+        padding: 1.5rem 1rem;
+    }
+    
     .ai-interface {
         grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .real-chat-container {
+        order: 1;
+    }
+    
+    .real-features-panel {
+        order: 2;
+    }
+    
+    .real-ai-analytics {
+        order: 3;
+    }
+    
+    .real-chat-messages {
+        height: 300px;
+    }
+    
+    .smart-suggestions {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .smart-pill {
+        justify-content: center;
+        text-align: center;
+    }
+    
+    .real-input-container {
+        gap: 0.5rem;
+    }
+    
+    #real-ai-input {
+        font-size: 16px; /* Prevent zoom on iOS */
+    }
+    
+    .mic-button, .send-button-real {
+        width: 44px;
+        height: 44px;
+        flex-shrink: 0;
     }
     
     .setup-step {
         flex-direction: column;
         gap: 1rem;
+        padding: 1.5rem;
+    }
+    
+    .step-number {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
     }
     
     .guarantee-content {
         flex-direction: column;
         text-align: center;
+        gap: 1rem;
     }
     
     .pricing-options {
         grid-template-columns: 1fr;
+        gap: 1.5rem;
     }
     
     .pricing-card.premium {
         transform: none;
+        margin: 0;
+    }
+    
+    .features-showcase {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .feature-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+    
+    .google-icon-large {
+        width: 50px;
+        height: 50px;
+        font-size: 1.25rem;
+    }
+    
+    .analytics-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+    
+    .metric-card {
+        padding: 0.75rem;
+    }
+    
+    .metric-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
+    }
+    
+    .metric-number {
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-text h1 {
+        font-size: 1.75rem;
+    }
+    
+    .google-ai-badge {
+        font-size: 0.875rem;
+        padding: 0.5rem 1rem;
+    }
+    
+    .real-ai-cta {
+        font-size: 1rem;
+        padding: 1rem 1.5rem;
+    }
+    
+    .real-ai-demo {
+        padding: 1rem;
+    }
+    
+    .chat-header-real {
+        padding: 1rem;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+    
+    .ai-info-real {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    .ai-info-real h3 {
+        font-size: 1rem;
+    }
+    
+    .ai-powered {
+        font-size: 0.75rem;
+    }
+    
+    .real-controls {
+        gap: 0.5rem;
+    }
+    
+    .voice-control, .tts-control {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .real-input-section {
+        padding: 1rem;
+    }
+    
+    .section-header h2 {
+        font-size: 2rem;
+    }
+    
+    .section-header p {
+        font-size: 1rem;
+    }
+    
+    .setup-header h2 {
+        font-size: 2rem;
+    }
+    
+    .pricing-header h2 {
+        font-size: 2rem;
     }
 }
 
