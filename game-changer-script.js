@@ -129,6 +129,279 @@ function startLiveNotifications() {
 // Initialize Game Changer functionality
 function initializeGameChanger() {
     console.log('🚀 GAME CHANGER INITIALIZED - READY TO MAKE PLUMBERS RICH!');
+    initializeVoice();
+}
+
+// Voice functionality variables
+let isListening = false;
+let recognition = null;
+let synthesis = window.speechSynthesis;
+let sarahVoice = null;
+
+// Initialize voice functionality
+function initializeVoice() {
+    // Check if browser supports speech recognition
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognition();
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.lang = 'en-US';
+        
+        recognition.onstart = function() {
+            isListening = true;
+            updateMicrophoneButton();
+        };
+        
+        recognition.onresult = function(event) {
+            const transcript = event.results[0][0].transcript;
+            handleVoiceInput(transcript);
+        };
+        
+        recognition.onerror = function(event) {
+            console.error('Speech recognition error:', event.error);
+            isListening = false;
+            updateMicrophoneButton();
+        };
+        
+        recognition.onend = function() {
+            isListening = false;
+            updateMicrophoneButton();
+        };
+    }
+    
+    // Set up Sarah's voice
+    if (synthesis) {
+        synthesis.onvoiceschanged = function() {
+            const voices = synthesis.getVoices();
+            // Prefer female English voices
+            sarahVoice = voices.find(voice => 
+                voice.name.includes('Female') || 
+                voice.name.includes('Samantha') || 
+                voice.name.includes('Victoria') ||
+                voice.gender === 'female'
+            ) || voices.find(voice => voice.lang.startsWith('en')) || voices[0];
+        };
+    }
+}
+
+// Start voice conversation with Sarah
+function startVoiceCall() {
+    if (!recognition) {
+        alert('Voice calling not supported in this browser. Please use Chrome or Edge.');
+        return;
+    }
+    
+    // Sarah introduces herself
+    speakAsSarah("Hi! This is Sarah from your plumbing service. I'm here to help you 24/7. What can I do for you today?");
+    
+    // Show voice interface
+    showVoiceInterface();
+}
+
+// Speak as Sarah
+function speakAsSarah(text) {
+    if (synthesis && sarahVoice) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.voice = sarahVoice;
+        utterance.rate = 0.9;
+        utterance.pitch = 1.1;
+        utterance.volume = 1;
+        
+        utterance.onend = function() {
+            // After Sarah speaks, start listening for customer
+            setTimeout(() => {
+                if (recognition && !isListening) {
+                    startListening();
+                }
+            }, 500);
+        };
+        
+        synthesis.speak(utterance);
+    }
+}
+
+// Start listening for customer input
+function startListening() {
+    if (recognition && !isListening) {
+        try {
+            recognition.start();
+        } catch (error) {
+            console.error('Error starting recognition:', error);
+        }
+    }
+}
+
+// Handle voice input from customer
+function handleVoiceInput(transcript) {
+    console.log('Customer said:', transcript);
+    
+    // Show what customer said
+    addVoiceMessage('customer', transcript);
+    
+    // Generate Sarah's response
+    generateSarahResponse(transcript).then(response => {
+        addVoiceMessage('sarah', response);
+        speakAsSarah(response);
+    });
+}
+
+// Generate Sarah's response using Google AI
+async function generateSarahResponse(customerInput) {
+    const prompt = `You are Sarah, a professional and friendly plumbing receptionist. A customer just said: "${customerInput}"
+
+    Respond naturally as Sarah would, being helpful and professional. Keep responses conversational and under 50 words. Include specific pricing when relevant:
+    - Emergency calls: $150 base + parts
+    - Drain cleaning: $125-200
+    - Water heater repair: $200-400
+    - Bathroom renovation: $8,500-15,000
+    - Regular service calls: $95-175
+    
+    Always offer to schedule service and get their address if it's an emergency.`;
+
+    try {
+        const response = await fetch(`${GOOGLE_AI_ENDPOINT}?key=${GOOGLE_AI_API_KEY}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                contents: [{
+                    parts: [{
+                        text: prompt
+                    }]
+                }]
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('API request failed');
+        }
+
+        const data = await response.json();
+        return data.candidates[0].content.parts[0].text;
+    } catch (error) {
+        console.error('Error getting AI response:', error);
+        return "I'm sorry, I'm having trouble hearing you right now. For immediate assistance, please call us directly at (555) PLUMBER. How else can I help you?";
+    }
+}
+
+// Show voice interface
+function showVoiceInterface() {
+    const modal = document.getElementById('game-changer-modal');
+    if (modal) {
+        // Replace modal content with voice interface
+        const modalBody = modal.querySelector('.modal-body-explosive');
+        modalBody.innerHTML = `
+            <div class="voice-call-interface">
+                <div class="sarah-calling-live">
+                    <div class="sarah-avatar-live">
+                        <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face" alt="Sarah">
+                        <div class="speaking-animation"></div>
+                    </div>
+                    <h3>🔥 LIVE CALL WITH SARAH!</h3>
+                    <div class="call-status">Call Connected - Speak Now!</div>
+                </div>
+                
+                <div class="voice-messages" id="voice-messages">
+                    <div class="voice-message sarah-msg">
+                        <div class="msg-avatar">👩‍💼</div>
+                        <div class="msg-content">Hi! This is Sarah from your plumbing service. I'm here to help you 24/7. What can I do for you today?</div>
+                    </div>
+                </div>
+                
+                <div class="voice-controls">
+                    <button class="mic-btn" id="voice-mic-btn" onclick="toggleMicrophone()">
+                        <i class="fas fa-microphone"></i>
+                        <span>Hold to Talk</span>
+                    </button>
+                    <button class="end-call-btn" onclick="endVoiceCall()">
+                        <i class="fas fa-phone-slash"></i>
+                        End Call
+                    </button>
+                </div>
+                
+                <div class="quick-scenarios">
+                    <h4>Or try these scenarios:</h4>
+                    <button class="scenario-voice-btn" onclick="simulateVoiceScenario('emergency')">
+                        🚨 "I have a pipe emergency!"
+                    </button>
+                    <button class="scenario-voice-btn" onclick="simulateVoiceScenario('quote')">
+                        💰 "How much for bathroom renovation?"
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+// Add voice message to interface
+function addVoiceMessage(sender, text) {
+    const messagesContainer = document.getElementById('voice-messages');
+    if (messagesContainer) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `voice-message ${sender}-msg`;
+        messageDiv.innerHTML = `
+            <div class="msg-avatar">${sender === 'sarah' ? '👩‍💼' : '👤'}</div>
+            <div class="msg-content">${text}</div>
+        `;
+        messagesContainer.appendChild(messageDiv);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+}
+
+// Toggle microphone
+function toggleMicrophone() {
+    if (isListening) {
+        recognition.stop();
+    } else {
+        startListening();
+    }
+}
+
+// Update microphone button
+function updateMicrophoneButton() {
+    const micBtn = document.getElementById('voice-mic-btn');
+    if (micBtn) {
+        if (isListening) {
+            micBtn.innerHTML = '<i class="fas fa-stop"></i><span>Listening...</span>';
+            micBtn.classList.add('listening');
+        } else {
+            micBtn.innerHTML = '<i class="fas fa-microphone"></i><span>Hold to Talk</span>';
+            micBtn.classList.remove('listening');
+        }
+    }
+}
+
+// Simulate voice scenarios
+function simulateVoiceScenario(scenario) {
+    const scenarios = {
+        emergency: "Help! I have a burst pipe and water is everywhere!",
+        quote: "How much would it cost for a complete bathroom renovation?"
+    };
+    
+    if (scenarios[scenario]) {
+        handleVoiceInput(scenarios[scenario]);
+    }
+}
+
+// End voice call
+function endVoiceCall() {
+    if (recognition && isListening) {
+        recognition.stop();
+    }
+    if (synthesis) {
+        synthesis.cancel();
+    }
+    closeGameChangerDemo();
+    
+    // Show signup overlay
+    setTimeout(() => {
+        startNow();
+    }, 500);
 }
 
 // Open Game Changer Demo Modal
@@ -262,7 +535,7 @@ function closeDemoOverlay() {
 
 // Call Sarah Now
 function callSarahNow() {
-    openGameChangerDemo();
+    startVoiceCall();
 }
 
 // Get Started Now
