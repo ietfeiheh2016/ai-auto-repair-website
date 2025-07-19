@@ -6,8 +6,10 @@
 }
 
 html {
-    -webkit-text-size-adjust: 100%;
-    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: none;
+    -ms-text-size-adjust: none;
+    text-size-adjust: none;
+    font-size: 100%;
 }
 
 body {
@@ -1315,14 +1317,16 @@ body {
     }
     
     .hero-text h1 {
-        font-size: 1.8rem;
+        font-size: 2.2rem;
         line-height: 1.2;
         margin-bottom: 1rem;
+        font-weight: 900;
     }
     
     .hero-subtitle {
-        font-size: 0.95rem;
+        font-size: 1.1rem;
         margin-bottom: 1.5rem;
+        line-height: 1.5;
     }
     
     .google-features {
@@ -1335,8 +1339,9 @@ body {
     .google-feature {
         flex-direction: row;
         text-align: left;
-        padding: 1rem;
-        font-size: 0.9rem;
+        padding: 1.2rem;
+        font-size: 1rem;
+        font-weight: 600;
     }
     
     .google-feature i {
@@ -1349,10 +1354,11 @@ body {
     }
     
     .real-ai-cta {
-        font-size: 1rem;
-        padding: 1rem 1.5rem;
+        font-size: 1.2rem;
+        padding: 1.2rem 2rem;
         width: 100%;
-        max-width: 280px;
+        max-width: 320px;
+        font-weight: 700;
     }
     
     .real-ai-demo {
@@ -1402,8 +1408,9 @@ body {
     .smart-pill {
         justify-content: flex-start;
         text-align: left;
-        padding: 0.75rem 1rem;
-        font-size: 0.9rem;
+        padding: 1rem 1.2rem;
+        font-size: 1rem;
+        font-weight: 500;
     }
     
     .real-input-container {
@@ -1412,15 +1419,18 @@ body {
     }
     
     #real-ai-input {
-        font-size: 16px; /* Prevent zoom on iOS */
+        font-size: 18px; /* Larger for better Chrome mobile visibility */
         flex: 1;
         min-width: 0;
+        padding: 1rem;
+        height: 48px;
     }
     
     .mic-button, .send-button-real {
-        width: 44px;
-        height: 44px;
+        width: 48px;
+        height: 48px;
         flex-shrink: 0;
+        font-size: 1.1rem;
     }
     
     .setup-step {
@@ -1490,17 +1500,25 @@ body {
 
 @media (max-width: 480px) {
     .hero-text h1 {
-        font-size: 1.75rem;
+        font-size: 2rem;
+        font-weight: 900;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+        line-height: 1.4;
     }
     
     .google-ai-badge {
-        font-size: 0.875rem;
-        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        padding: 0.75rem 1.25rem;
+        font-weight: 600;
     }
     
     .real-ai-cta {
-        font-size: 1rem;
-        padding: 1rem 1.5rem;
+        font-size: 1.1rem;
+        padding: 1.1rem 1.75rem;
+        font-weight: 700;
     }
     
     .real-ai-demo {
@@ -1553,6 +1571,53 @@ body {
     
     .pricing-header h2 {
         font-size: 2rem;
+    }
+}
+
+/* Chrome Mobile Specific Fixes */
+@supports (-webkit-touch-callout: none) {
+    @media (max-width: 768px) {
+        body {
+            font-size: 18px;
+            line-height: 1.5;
+        }
+        
+        .hero-text h1 {
+            font-size: 2.5rem !important;
+            font-weight: 900 !important;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.2rem !important;
+            line-height: 1.4 !important;
+        }
+        
+        .google-feature {
+            font-size: 1.1rem !important;
+            font-weight: 600 !important;
+        }
+        
+        .real-ai-cta {
+            font-size: 1.3rem !important;
+            padding: 1.3rem 2.2rem !important;
+        }
+        
+        #real-ai-input {
+            font-size: 20px !important;
+            padding: 1.2rem !important;
+            height: 52px !important;
+        }
+        
+        .smart-pill {
+            font-size: 1.1rem !important;
+            padding: 1.1rem 1.3rem !important;
+        }
+        
+        .mic-button, .send-button-real {
+            width: 52px !important;
+            height: 52px !important;
+            font-size: 1.2rem !important;
+        }
     }
 }
 
