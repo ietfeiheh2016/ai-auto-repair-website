@@ -1,1 +1,1 @@
-Force deployment timestamp: 2025-01-19 - Chrome desktop scaling fixes applied
+Force deployment timestamp: 2025-01-19 14:45 - Voice features fixed: speech recognition + text-to-speech working
