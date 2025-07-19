@@ -719,66 +719,139 @@ Respond as Alex in a natural, conversational way. If they're asking about servic
 
         // Initialize Speech Recognition
         function initializeSpeech() {
-            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-                recognition = new SpeechRecognition();
-                
-                recognition.continuous = false;
-                recognition.interimResults = true;
-                recognition.lang = 'en-US';
-                
-                recognition.onstart = function() {
-                    isListening = true;
-                    const micBtn = document.querySelector('.mic-btn i');
-                    if (micBtn) {
-                        micBtn.className = 'fas fa-stop';
-                        micBtn.style.color = '#ff4444';
-                    }
-                    console.log('Voice recognition started');
-                };
-                
-                recognition.onresult = function(event) {
-                    let transcript = '';
-                    for (let i = event.resultIndex; i < event.results.length; i++) {
-                        transcript += event.results[i][0].transcript;
-                    }
-                    
-                    document.getElementById('chat-input').value = transcript;
-                    
-                    if (event.results[event.results.length - 1].isFinal) {
-                        setTimeout(() => {
-                            sendMessage();
-                        }, 500);
-                    }
-                };
-                
-                recognition.onerror = function(event) {
-                    console.error('Speech recognition error:', event.error);
-                    isListening = false;
-                    const micBtn = document.querySelector('.mic-btn i');
-                    if (micBtn) {
-                        micBtn.className = 'fas fa-microphone';
-                        micBtn.style.color = '';
-                    }
-                    
-                    if (event.error === 'not-allowed') {
-                        alert('Please allow microphone access to use voice input');
-                    }
-                };
-                
-                recognition.onend = function() {
-                    isListening = false;
-                    const micBtn = document.querySelector('.mic-btn i');
-                    if (micBtn) {
-                        micBtn.className = 'fas fa-microphone';
-                        micBtn.style.color = '';
-                    }
-                    console.log('Voice recognition ended');
-                };
-                
-                return true;
+            // Check for browser support
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                console.warn('Speech recognition not supported');
+                showVoiceNotSupported();
+                return false;
             }
-            return false;
+            
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            
+            recognition.continuous = false;
+            recognition.interimResults = true;
+            recognition.lang = 'en-US';
+            recognition.maxAlternatives = 1;
+            
+            recognition.onstart = function() {
+                isListening = true;
+                updateMicrophoneUI(true);
+                showVoiceStatus('🎤 Listening... Speak now!');
+                console.log('Voice recognition started');
+            };
+            
+            recognition.onresult = function(event) {
+                let transcript = '';
+                let confidence = 0;
+                
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    transcript += event.results[i][0].transcript;
+                    confidence = event.results[i][0].confidence;
+                }
+                
+                document.getElementById('chat-input').value = transcript;
+                
+                if (event.results[event.results.length - 1].isFinal) {
+                    showVoiceStatus('✅ Voice recognized! Sending message...');
+                    setTimeout(() => {
+                        sendMessage();
+                        hideVoiceStatus();
+                    }, 500);
+                }
+            };
+            
+            recognition.onerror = function(event) {
+                console.error('Speech recognition error:', event.error);
+                isListening = false;
+                updateMicrophoneUI(false);
+                
+                let errorMessage = '';
+                switch(event.error) {
+                    case 'not-allowed':
+                        errorMessage = '🚫 Microphone access denied. Please enable microphone in browser settings.';
+                        break;
+                    case 'no-speech':
+                        errorMessage = '🔇 No speech detected. Please try speaking louder.';
+                        break;
+                    case 'audio-capture':
+                        errorMessage = '🎤 Microphone not available. Check if another app is using it.';
+                        break;
+                    case 'network':
+                        errorMessage = '🌐 Network error. Check your internet connection.';
+                        break;
+                    default:
+                        errorMessage = '❌ Voice recognition error. Please try again.';
+                }
+                
+                showVoiceStatus(errorMessage, true);
+                setTimeout(hideVoiceStatus, 3000);
+            };
+            
+            recognition.onend = function() {
+                isListening = false;
+                updateMicrophoneUI(false);
+                console.log('Voice recognition ended');
+            };
+            
+            return true;
+        }
+
+        function updateMicrophoneUI(listening) {
+            const micBtn = document.querySelector('.mic-btn i');
+            if (micBtn) {
+                if (listening) {
+                    micBtn.className = 'fas fa-stop';
+                    micBtn.style.color = '#ff4444';
+                } else {
+                    micBtn.className = 'fas fa-microphone';
+                    micBtn.style.color = '';
+                }
+            }
+        }
+
+        function showVoiceStatus(message, isError = false) {
+            const statusDiv = document.getElementById('voice-status') || createVoiceStatusDiv();
+            statusDiv.textContent = message;
+            statusDiv.style.display = 'block';
+            statusDiv.style.color = isError ? '#ff4444' : '#4285f4';
+        }
+
+        function hideVoiceStatus() {
+            const statusDiv = document.getElementById('voice-status');
+            if (statusDiv) {
+                statusDiv.style.display = 'none';
+            }
+        }
+
+        function createVoiceStatusDiv() {
+            const statusDiv = document.createElement('div');
+            statusDiv.id = 'voice-status';
+            statusDiv.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: white;
+                border: 2px solid #4285f4;
+                border-radius: 10px;
+                padding: 15px 25px;
+                font-size: 18px;
+                font-weight: bold;
+                z-index: 1000;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                display: none;
+            `;
+            document.body.appendChild(statusDiv);
+            return statusDiv;
+        }
+
+        function showVoiceNotSupported() {
+            const micBtns = document.querySelectorAll('.mic-btn, .control-btn');
+            micBtns.forEach(btn => {
+                btn.style.opacity = '0.5';
+                btn.title = 'Voice not supported in this browser. Please use Chrome.';
+            });
         }
 
         function toggleVoice() {
@@ -796,13 +869,15 @@ Respond as Alex in a natural, conversational way. If they're asking about servic
 
         function toggleSpeaker() {
             speechEnabled = !speechEnabled;
-            const speakerBtn = document.querySelector('.control-btn i.fa-volume-up');
-            if (speakerBtn) {
-                speakerBtn.style.color = speechEnabled ? '' : '#ccc';
-            }
+            updateSpeakerUI(false);
             
             if (!speechEnabled) {
                 speechSynthesis.cancel();
+                showVoiceStatus('🔇 Text-to-speech disabled');
+                setTimeout(hideVoiceStatus, 2000);
+            } else {
+                showVoiceStatus('🔊 Text-to-speech enabled');
+                setTimeout(hideVoiceStatus, 2000);
             }
         }
 
@@ -811,32 +886,90 @@ Respond as Alex in a natural, conversational way. If they're asking about servic
         }
 
         function speakText(text) {
-            if (!speechEnabled || !('speechSynthesis' in window)) return;
+            if (!speechEnabled || !('speechSynthesis' in window)) {
+                console.warn('Text-to-speech not available');
+                return;
+            }
             
             // Cancel any ongoing speech
             speechSynthesis.cancel();
             
-            // Clean text for speech
-            const cleanText = text.replace(/[🤖✅🚀📅🕐📍💰🔧]/g, '').replace(/\n/g, ' ');
+            // Clean text for speech - remove emojis and HTML
+            const cleanText = text
+                .replace(/[🤖✅🚀📅🕐📍💰🔧👋❌🚫🔇🎤🌐]/g, '')
+                .replace(/<[^>]*>/g, '')
+                .replace(/\n/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+            
+            if (!cleanText) return;
             
             const utterance = new SpeechSynthesisUtterance(cleanText);
             utterance.rate = 0.9;
-            utterance.pitch = 1;
-            utterance.volume = 0.8;
+            utterance.pitch = 1.0;
+            utterance.volume = 0.9;
+            utterance.lang = 'en-US';
             
-            // Try to get a good voice
+            // Get the best available voice
             const voices = speechSynthesis.getVoices();
-            const preferredVoice = voices.find(voice => 
-                voice.name.includes('Google') || 
-                voice.name.includes('Female') ||
-                voice.lang.includes('en-US')
-            );
+            let selectedVoice = null;
             
-            if (preferredVoice) {
-                utterance.voice = preferredVoice;
+            // Priority order for voice selection
+            const voicePreferences = [
+                'Google US English',
+                'Microsoft Zira',
+                'Alex',
+                'Samantha'
+            ];
+            
+            for (const preference of voicePreferences) {
+                selectedVoice = voices.find(voice => 
+                    voice.name.includes(preference) && voice.lang.includes('en')
+                );
+                if (selectedVoice) break;
             }
             
+            // Fallback to any English voice
+            if (!selectedVoice) {
+                selectedVoice = voices.find(voice => 
+                    voice.lang.includes('en-US') || voice.lang.includes('en')
+                );
+            }
+            
+            if (selectedVoice) {
+                utterance.voice = selectedVoice;
+            }
+            
+            // Add event listeners for feedback
+            utterance.onstart = function() {
+                showVoiceStatus('🔊 Speaking...');
+                updateSpeakerUI(true);
+            };
+            
+            utterance.onend = function() {
+                hideVoiceStatus();
+                updateSpeakerUI(false);
+            };
+            
+            utterance.onerror = function(event) {
+                console.error('Speech synthesis error:', event.error);
+                hideVoiceStatus();
+                updateSpeakerUI(false);
+            };
+            
             speechSynthesis.speak(utterance);
+        }
+
+        function updateSpeakerUI(speaking) {
+            const speakerBtn = document.querySelector('.control-btn i.fa-volume-up');
+            if (speakerBtn) {
+                if (speaking) {
+                    speakerBtn.style.color = '#4285f4';
+                    speakerBtn.className = 'fas fa-volume-up';
+                } else {
+                    speakerBtn.style.color = speechEnabled ? '' : '#ccc';
+                }
+            }
         }
     </script>
 </body>
