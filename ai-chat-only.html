@@ -346,6 +346,103 @@
             }
         }
 
+        /* Phone Call Styles */
+        .phone-call-section {
+            padding: 25px;
+            text-align: center;
+            background: linear-gradient(45deg, #ff6b6b, #ff4757);
+            border-radius: 20px;
+            margin: 20px 30px;
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3);
+        }
+
+        .call-now-btn {
+            background: linear-gradient(45deg, #00ff00, #00cc00);
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            font-size: 28px !important;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 0 auto;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0, 255, 0, 0.4);
+            animation: pulse-call 2s infinite;
+        }
+
+        .call-now-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 35px rgba(0, 255, 0, 0.6);
+        }
+
+        .call-now-btn.ringing {
+            background: linear-gradient(45deg, #ffa500, #ff8c00);
+            animation: ring-animation 0.5s infinite;
+        }
+
+        .call-now-btn.connected {
+            background: linear-gradient(45deg, #4285f4, #0066cc);
+            animation: none;
+        }
+
+        .call-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px 25px;
+            border-radius: 15px;
+            margin-top: 15px;
+        }
+
+        .call-timer {
+            font-size: 24px !important;
+            font-weight: bold;
+            color: #ff4757;
+            font-family: 'Courier New', monospace;
+        }
+
+        .hang-up-btn {
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 18px !important;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .hang-up-btn:hover {
+            background: #ff3838;
+            transform: scale(1.05);
+        }
+
+        @keyframes pulse-call {
+            0%, 100% { 
+                box-shadow: 0 8px 25px rgba(0, 255, 0, 0.4);
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 0 8px 35px rgba(0, 255, 0, 0.8);
+                transform: scale(1.02);
+            }
+        }
+
+        @keyframes ring-animation {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+        }
+
         /* Mobile Responsive */
         @media (max-width: 768px) {
             .suggestions {
@@ -426,6 +523,23 @@
             </div>
         </div>
 
+        <!-- Phone Call Button -->
+        <div class="phone-call-section" id="phone-section">
+            <button class="call-now-btn" id="call-btn" onclick="initiateCall()">
+                <i class="fas fa-phone" id="call-icon"></i>
+                <span id="call-text">📞 CALL NOW - Talk Live!</span>
+            </button>
+            <div class="call-status" id="call-status" style="display: none;">
+                <div class="call-timer" id="call-timer">00:00</div>
+                <div class="call-actions">
+                    <button class="hang-up-btn" onclick="endCall()">
+                        <i class="fas fa-phone-slash"></i>
+                        Hang Up
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <!-- Quick Suggestions -->
         <div class="suggestions">
             <button class="suggestion" onclick="sendMessage('I need an oil change for my car')">
@@ -469,6 +583,11 @@
         // Google AI Configuration - Your API Key
         const GOOGLE_AI_API_KEY = 'AIzaSyD-0Jyl1r9q8lzkEBVW-sR5dAD6VCDdAoY';
         const GOOGLE_AI_ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
+        
+        // Phone Call System Configuration
+        let isOnCall = false;
+        let callStartTime = null;
+        let callTimer = null;
         
         // Google Cloud Text-to-Speech Configuration
         const GOOGLE_TTS_ENDPOINT = 'https://texttospeech.googleapis.com/v1/text:synthesize';
@@ -1404,6 +1523,152 @@ Respond as Alex the automotive expert. Be comprehensive, helpful, and knowledgea
             const modal = document.getElementById('voice-selector-modal');
             if (modal) {
                 modal.remove();
+            }
+        }
+
+        // Phone Call System
+        async function initiateCall() {
+            if (isOnCall) {
+                endCall();
+                return;
+            }
+
+            const callBtn = document.getElementById('call-btn');
+            const callIcon = document.getElementById('call-icon');
+            const callText = document.getElementById('call-text');
+            const callStatus = document.getElementById('call-status');
+
+            // Start ringing
+            callBtn.classList.add('ringing');
+            callIcon.className = 'fas fa-phone';
+            callText.textContent = '📞 Ringing...';
+            
+            // Play ringing sound
+            playRingingSound();
+            
+            setTimeout(() => {
+                // Call answered
+                isOnCall = true;
+                callStartTime = Date.now();
+                
+                callBtn.classList.remove('ringing');
+                callBtn.classList.add('connected');
+                callText.textContent = '🔊 Connected - Talking Live!';
+                callStatus.style.display = 'flex';
+                
+                // Start call timer
+                startCallTimer();
+                
+                // AI greeting for phone call
+                setTimeout(() => {
+                    const greeting = "Hello! Thank you for calling our auto repair shop. This is Alex, your automotive specialist. How can I help you with your vehicle today?";
+                    addMessage('ai', greeting);
+                    
+                    // Enable continuous listening for phone call
+                    startContinuousListening();
+                }, 1000);
+                
+            }, 3000); // Ring for 3 seconds
+        }
+
+        function endCall() {
+            if (!isOnCall) return;
+            
+            isOnCall = false;
+            const callBtn = document.getElementById('call-btn');
+            const callIcon = document.getElementById('call-icon');
+            const callText = document.getElementById('call-text');
+            const callStatus = document.getElementById('call-status');
+            
+            // Reset UI
+            callBtn.classList.remove('ringing', 'connected');
+            callIcon.className = 'fas fa-phone';
+            callText.textContent = '📞 CALL NOW - Talk Live!';
+            callStatus.style.display = 'none';
+            
+            // Stop timer
+            if (callTimer) {
+                clearInterval(callTimer);
+                callTimer = null;
+            }
+            
+            // Stop continuous listening
+            stopContinuousListening();
+            
+            // Add call ended message
+            const callDuration = formatCallTime(Date.now() - callStartTime);
+            addMessage('ai', `Call ended. Duration: ${callDuration}. Thank you for calling! Feel free to call again anytime.`);
+        }
+
+        function startCallTimer() {
+            const timerElement = document.getElementById('call-timer');
+            callTimer = setInterval(() => {
+                const elapsed = Date.now() - callStartTime;
+                timerElement.textContent = formatCallTime(elapsed);
+            }, 1000);
+        }
+
+        function formatCallTime(ms) {
+            const seconds = Math.floor(ms / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+        }
+
+        function playRingingSound() {
+            // Create ringing sound using Web Audio API
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.setValueAtTime(440, audioContext.currentTime);
+            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+            
+            // Ring pattern: beep beep pause
+            for (let i = 0; i < 3; i++) {
+                setTimeout(() => {
+                    oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+                    setTimeout(() => {
+                        oscillator.frequency.setValueAtTime(0, audioContext.currentTime);
+                    }, 200);
+                }, i * 600);
+            }
+            
+            oscillator.start();
+            setTimeout(() => oscillator.stop(), 3000);
+        }
+
+        function startContinuousListening() {
+            if (!recognition) {
+                initializeSpeech();
+            }
+            
+            if (recognition && isOnCall) {
+                recognition.continuous = true;
+                recognition.interimResults = true;
+                
+                recognition.onend = function() {
+                    if (isOnCall) {
+                        // Restart listening automatically during call
+                        setTimeout(() => {
+                            if (isOnCall) {
+                                recognition.start();
+                            }
+                        }, 100);
+                    }
+                };
+                
+                recognition.start();
+            }
+        }
+
+        function stopContinuousListening() {
+            if (recognition) {
+                recognition.continuous = false;
+                recognition.stop();
             }
         }
     </script>
