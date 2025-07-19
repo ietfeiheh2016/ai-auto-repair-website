@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mike's Auto Repair - Expert Car Service & Repair</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <i class="fas fa-wrench"></i>
+                    <span>Mike's Auto Repair</span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#" class="cta-btn" onclick="openBookingModal()">Book Appointment</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Expert Auto Repair You Can Trust</h1>
+            <p>Over 25 years of experience fixing cars with honesty, quality, and fair prices. Your car is in good hands.</p>
+            <div class="hero-buttons">
+                <button class="btn-primary" onclick="openBookingModal()">
+                    <i class="fas fa-calendar"></i> Book Appointment
+                </button>
+                <button class="btn-secondary" onclick="startQuote()">
+                    <i class="fas fa-calculator"></i> Get Free Quote
+                </button>
+            </div>
+            <div class="hero-contact">
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <a href="tel:+1234567890">(123) 456-7890</a>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-clock"></i>
+                    <span>Open Mon-Fri 8AM-6PM</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="https://images.unsplash.com/photo-1486754735734-325b5831c3ad?w=600&h=400&fit=crop" alt="Auto Repair Shop">
+        </div>
+    </section>
+
+    <!-- Emergency Banner -->
+    <section class="emergency-banner">
+        <div class="container">
+            <div class="emergency-content">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>Car Emergency? We're here to help!</span>
+                <a href="tel:+1234567890" class="emergency-btn">Call Now: (123) 456-7890</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <div class="container">
+            <h2>Our Services</h2>
+            <p class="section-subtitle">Complete auto repair and maintenance services</p>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-oil-can"></i>
+                    </div>
+                    <h3>Oil Changes</h3>
+                    <p>Quick and reliable oil changes with high-quality oil and filters.</p>
+                    <div class="service-price">Starting at $39.99</div>
+                    <button class="service-btn" onclick="bookService('Oil Change')">Book Now</button>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-car-battery"></i>
+                    </div>
+                    <h3>Brake Repair</h3>
+                    <p>Expert brake service to keep you safe on the road.</p>
+                    <div class="service-price">Starting at $149.99</div>
+                    <button class="service-btn" onclick="bookService('Brake Repair')">Book Now</button>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <h3>Engine Diagnostics</h3>
+                    <p>Advanced computer diagnostics to identify any issues.</p>
+                    <div class="service-price">Starting at $89.99</div>
+                    <button class="service-btn" onclick="bookService('Engine Diagnostics')">Book Now</button>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-thermometer-half"></i>
+                    </div>
+                    <h3>AC Repair</h3>
+                    <p>Keep cool with our air conditioning repair and maintenance.</p>
+                    <div class="service-price">Starting at $119.99</div>
+                    <button class="service-btn" onclick="bookService('AC Repair')">Book Now</button>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-tire"></i>
+                    </div>
+                    <h3>Tire Service</h3>
+                    <p>Tire installation, rotation, and repair services.</p>
+                    <div class="service-price">Starting at $25.99</div>
+                    <button class="service-btn" onclick="bookService('Tire Service')">Book Now</button>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <h3>General Repairs</h3>
+                    <p>All types of automotive repairs and maintenance.</p>
+                    <div class="service-price">Call for Quote</div>
+                    <button class="service-btn" onclick="bookService('General Repair')">Book Now</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>Why Choose Mike's Auto Repair?</h2>
+                    <div class="about-features">
+                        <div class="feature">
+                            <i class="fas fa-award"></i>
+                            <div>
+                                <h3>25+ Years Experience</h3>
+                                <p>Decades of experience fixing all makes and models</p>
+                            </div>
+                        </div>
+                        
+                        <div class="feature">
+                            <i class="fas fa-shield-alt"></i>
+                            <div>
+                                <h3>Honest & Fair Pricing</h3>
+                                <p>No hidden fees, upfront estimates, and fair prices</p>
+                            </div>
+                        </div>
+                        
+                        <div class="feature">
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                <h3>Fast Service</h3>
+                                <p>Most repairs completed same day or next day</p>
+                            </div>
+                        </div>
+                        
+                        <div class="feature">
+                            <i class="fas fa-handshake"></i>
+                            <div>
+                                <h3>Warranty Guaranteed</h3>
+                                <p>All work backed by our satisfaction guarantee</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=500&h=400&fit=crop" alt="Mechanic at work">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="gallery">
+        <div class="container">
+            <h2>Our Work</h2>
+            <p class="section-subtitle">See the quality of our repairs</p>
+            
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1486754735734-325b5831c3ad?w=300&h=200&fit=crop" alt="Engine repair">
+                    <div class="gallery-overlay">
+                        <h3>Engine Repair</h3>
+                        <p>Complete engine overhaul</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=300&h=200&fit=crop" alt="Brake service">
+                    <div class="gallery-overlay">
+                        <h3>Brake Service</h3>
+                        <p>Professional brake replacement</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1625047509168-a7026f36de04?w=300&h=200&fit=crop" alt="Oil change">
+                    <div class="gallery-overlay">
+                        <h3>Oil Change</h3>
+                        <p>Quick and clean service</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1609521263047-f8f205293f24?w=300&h=200&fit=crop" alt="Tire service">
+                    <div class="gallery-overlay">
+                        <h3>Tire Service</h3>
+                        <p>Professional tire installation</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section class="reviews">
+        <div class="container">
+            <h2>What Our Customers Say</h2>
+            <div class="reviews-grid">
+                <div class="review-card">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p>"Mike's shop fixed my car perfectly and for a fair price. Honest mechanics are hard to find!"</p>
+                    <div class="reviewer">
+                        <strong>Sarah Johnson</strong>
+                        <span>Verified Customer</span>
+                    </div>
+                </div>
+                
+                <div class="review-card">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p>"Fast, reliable service. They diagnosed the problem quickly and had me back on the road."</p>
+                    <div class="reviewer">
+                        <strong>David Martinez</strong>
+                        <span>Verified Customer</span>
+                    </div>
+                </div>
+                
+                <div class="review-card">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p>"Been coming here for years. Always honest about what needs to be fixed and what can wait."</p>
+                    <div class="reviewer">
+                        <strong>Lisa Chen</strong>
+                        <span>Verified Customer</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h2>Visit Our Shop</h2>
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <h3>Address</h3>
+                                <p>123 Main Street<br>Chicago, IL 60614</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <h3>Phone</h3>
+                                <p><a href="tel:+1234567890">(123) 456-7890</a></p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                <h3>Hours</h3>
+                                <p>Monday - Friday: 8:00 AM - 6:00 PM<br>
+                                Saturday: 9:00 AM - 4:00 PM<br>
+                                Sunday: Closed</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <h3>Email</h3>
+                                <p><a href="mailto:info@mikesautorepair.com">info@mikesautorepair.com</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <h3>Get Free Estimate</h3>
+                    <form id="quoteForm">
+                        <div class="form-group">
+                            <input type="text" id="name" name="name" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" id="phone" name="phone" placeholder="Phone Number" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" name="email" placeholder="Email Address" required>
+                        </div>
+                        <div class="form-group">
+                            <select id="service" name="service" required>
+                                <option value="">Select Service</option>
+                                <option value="oil-change">Oil Change</option>
+                                <option value="brake-repair">Brake Repair</option>
+                                <option value="engine-diagnostics">Engine Diagnostics</option>
+                                <option value="ac-repair">AC Repair</option>
+                                <option value="tire-service">Tire Service</option>
+                                <option value="general-repair">General Repair</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="message" name="message" placeholder="Describe the problem or service needed" rows="4"></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary">Get Free Quote</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="logo">
+                        <i class="fas fa-wrench"></i>
+                        <span>Mike's Auto Repair</span>
+                    </div>
+                    <p>Your trusted local auto repair shop for over 25 years.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#gallery">Gallery</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Services</h3>
+                    <ul>
+                        <li>Oil Changes</li>
+                        <li>Brake Repair</li>
+                        <li>Engine Diagnostics</li>
+                        <li>AC Repair</li>
+                        <li>Tire Service</li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <p><i class="fas fa-phone"></i> (123) 456-7890</p>
+                    <p><i class="fas fa-envelope"></i> info@mikesautorepair.com</p>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 Main Street, Chicago, IL</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Mike's Auto Repair. All rights reserved. | Professional website by [Your Company Name]</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Booking Modal -->
+    <div id="bookingModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeBookingModal()">&times;</span>
+            <h2>Book Your Appointment</h2>
+            <form id="bookingForm">
+                <div class="form-group">
+                    <label for="bookingName">Full Name</label>
+                    <input type="text" id="bookingName" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="bookingPhone">Phone Number</label>
+                    <input type="tel" id="bookingPhone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="bookingEmail">Email Address</label>
+                    <input type="email" id="bookingEmail" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="bookingService">Service Needed</label>
+                    <select id="bookingService" name="service" required>
+                        <option value="">Select a service</option>
+                        <option value="oil-change">Oil Change</option>
+                        <option value="brake-repair">Brake Repair</option>
+                        <option value="engine-diagnostics">Engine Diagnostics</option>
+                        <option value="ac-repair">AC Repair</option>
+                        <option value="tire-service">Tire Service</option>
+                        <option value="general-repair">General Repair</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="bookingDate">Preferred Date</label>
+                    <input type="date" id="bookingDate" name="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="bookingTime">Preferred Time</label>
+                    <select id="bookingTime" name="time" required>
+                        <option value="">Select time</option>
+                        <option value="8:00 AM">8:00 AM</option>
+                        <option value="9:00 AM">9:00 AM</option>
+                        <option value="10:00 AM">10:00 AM</option>
+                        <option value="11:00 AM">11:00 AM</option>
+                        <option value="12:00 PM">12:00 PM</option>
+                        <option value="1:00 PM">1:00 PM</option>
+                        <option value="2:00 PM">2:00 PM</option>
+                        <option value="3:00 PM">3:00 PM</option>
+                        <option value="4:00 PM">4:00 PM</option>
+                        <option value="5:00 PM">5:00 PM</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="bookingMessage">Additional Details</label>
+                    <textarea id="bookingMessage" name="message" rows="3" placeholder="Tell us about your car's issue..."></textarea>
+                </div>
+                <button type="submit" class="btn-primary">Book Appointment</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- AI Chat Widget -->
+    <div id="chatWidget" class="chat-widget">
+        <div class="chat-header" onclick="toggleChat()">
+            <i class="fas fa-comments"></i>
+            <span>Ask Mike</span>
+            <div class="chat-status">Online</div>
+        </div>
+        <div class="chat-body" id="chatBody">
+            <div class="chat-messages" id="chatMessages">
+                <div class="chat-message bot">
+                    <div class="message-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="message-content">
+                        <p>Hi! I'm Mike's AI assistant. I can help you with:</p>
+                        <ul>
+                            <li>Service information and pricing</li>
+                            <li>Booking appointments</li>
+                            <li>Emergency assistance</li>
+                            <li>General car questions</li>
+                        </ul>
+                        <p>What can I help you with today?</p>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="chatInput" placeholder="Type your question...">
+                <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
