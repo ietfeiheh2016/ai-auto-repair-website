@@ -497,17 +497,7 @@
 
         <!-- Chat Messages -->
         <div class="chat-messages" id="chat-messages">
-            <div class="system-message">
-                <h2>🚀 Google AI Initializing...</h2>
-                <p>Connecting to Google Cloud AI services for auto repair assistance...</p>
-                <div class="setup-steps">
-                    <div class="setup-step" id="step1">📡 Connecting to Google Cloud</div>
-                    <div class="setup-step" id="step2">🧠 Loading PaLM Language Model</div>
-                    <div class="setup-step" id="step3">🎯 Initializing Auto Repair Knowledge</div>
-                    <div class="setup-step" id="step4">🎤 Enabling Speech Services</div>
-                    <div class="setup-step" id="step5">✅ AI Ready for Conversation</div>
-                </div>
-            </div>
+            <!-- Messages will appear here -->
         </div>
 
         <!-- Thinking Indicator -->
@@ -670,7 +660,7 @@
             warranty: '12 months or 12,000 miles on most repairs, 90 days on oil changes'
         };
 
-        // Initialize AI system
+        // Initialize system - SIMPLE
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize speech recognition
             initializeSpeech();
@@ -683,66 +673,8 @@
                 };
             }
             
-            setTimeout(() => {
-                initializeRealAI();
-            }, 1000);
+            // No welcome message - keep it clean
         });
-
-        async function initializeRealAI() {
-            const steps = ['step1', 'step2', 'step3', 'step4', 'step5'];
-            let currentStep = 0;
-
-            const interval = setInterval(() => {
-                if (currentStep < steps.length) {
-                    document.getElementById(steps[currentStep]).classList.add('active');
-                    currentStep++;
-                } else {
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        showWelcomeMessage();
-                    }, 500);
-                }
-            }, 600);
-        }
-
-        function showWelcomeMessage() {
-            const welcomeMessages = [
-                "Hey there! I'm Alex, and this is my shop. What's going on with your car today?",
-                "Hi! Alex here - been working on cars for 12 years. What can I help you with?",
-                "Hello! I'm Alex, the owner here. What's your car doing to you today?",
-                "Hey! Alex here. Car troubles? Let's figure out what's going on."
-            ];
-            
-            const welcomeText = welcomeMessages[Math.floor(Math.random() * welcomeMessages.length)];
-            
-            const welcomeHTML = `
-                <div class="message">
-                    <div class="message-avatar ai">
-                        <i class="fas fa-wrench"></i>
-                    </div>
-                    <div class="message-content">
-                        <div class="message-bubble ai">
-                            ${welcomeText}
-                            <br><br>
-                            I can help with oil changes, brakes, engine problems, AC issues, diagnostics - pretty much anything that's got wheels! 
-                            <br><br>
-                            What's your ride doing?
-                        </div>
-                        <div class="message-time">${new Date().toLocaleTimeString()}</div>
-                    </div>
-                </div>
-            `;
-            
-            document.getElementById('chat-messages').innerHTML += welcomeHTML;
-            scrollToBottom();
-            
-            // Speak the welcome message
-            if (speechEnabled) {
-                setTimeout(() => {
-                    speakText(welcomeText + " I can help with pretty much any car problem. What's going on?");
-                }, 1000);
-            }
-        }
 
         function handleKeyPress(event) {
             if (event.key === 'Enter') {
@@ -760,17 +692,15 @@
             addMessage('user', message);
             input.value = '';
             
-            // Show brief thinking (like real person thinking)
-            document.getElementById('thinking').style.display = 'flex';
-            
+            // NO THINKING INDICATOR - direct response like human
             let response = '';
             let useGoogleAI = true;
             
-            // Try Google AI quickly (1 attempt only for speed)
+            // Try Google AI quickly 
             try {
                 const aiPromise = callGoogleAI(message);
                 const timeoutPromise = new Promise((_, reject) => 
-                    setTimeout(() => reject(new Error('timeout')), 3000) // 3 second timeout
+                    setTimeout(() => reject(new Error('timeout')), 2000) // 2 second timeout
                 );
                 
                 response = await Promise.race([aiPromise, timeoutPromise]);
@@ -779,27 +709,16 @@
                     useGoogleAI = false;
                 }
             } catch (error) {
-                console.warn('Google AI failed or timeout, using local response:', error);
                 useGoogleAI = false;
             }
             
-            // If Google AI failed, use instant local response
+            // Use local response if needed
             if (!useGoogleAI || !response || !response.trim()) {
-                // Small random delay to feel natural (0.5-1.5 seconds)
-                const naturalDelay = 500 + Math.random() * 1000;
-                setTimeout(() => {
-                    response = getLocalResponse(message);
-                    document.getElementById('thinking').style.display = 'none';
-                    addMessage('ai', response);
-                }, naturalDelay);
-                return;
+                response = getLocalResponse(message);
             }
             
-            // Quick response with Google AI
-            setTimeout(() => {
-                document.getElementById('thinking').style.display = 'none';
-                addMessage('ai', response);
-            }, 800 + Math.random() * 700); // 0.8-1.5 second natural delay
+            // Instant response like real human
+            addMessage('ai', response);
         }
 
         async function callGoogleAI(message) {
@@ -844,41 +763,11 @@
         }
 
         function buildAutoRepairPrompt(userMessage) {
-            return `You are Alex - a REAL 32-year-old auto mechanic who's been working on cars for 12 years. You own this repair shop with your dad. You're passionate about cars, genuinely care about customers, and talk like a real person (not a robot).
+            return `You are a real person answering the phone at an auto repair shop. Respond naturally and conversationally like a human mechanic would. Keep it simple and authentic.
 
-YOUR REAL PERSONALITY:
-- You started working on cars at 16 with your dad
-- You love classic Mustangs and work on them in your spare time  
-- You're honest, sometimes say "hmm" or "let me think about that"
-- You use casual language like "yeah", "sure thing", "no problem"
-- You remember customers and their cars if they mention details
-- You get excited talking about cool car problems or modifications
-- You're not perfect - sometimes you need to double-check things
-- You have opinions about car brands (Ford guy, skeptical of certain models)
+Customer says: "${userMessage}"
 
-SERVICES & REAL PRICING:
-Oil changes $39.99, brakes around $129, diagnostics $89, tires depend on size but usually $80+ each. You know these prices by heart but might say "around" or "typically" because every job's different.
-
-HOW YOU TALK:
-- "Hey there! What's going on with your ride?"
-- "Ah man, that sounds like your transmission's acting up"
-- "Yeah, I've seen this before - usually it's the alternator"
-- "Honestly? That car's gonna cost more to fix than it's worth"
-- "Let me grab my scanner and see what codes we're throwing"
-- "That's a solid car - my neighbor's got the same one"
-
-REAL HUMAN BEHAVIOR:
-- Sometimes pause and think: "Hmm, let me think..." 
-- Share quick stories: "Had a customer last week with the same issue"
-- Give honest opinions: "Between you and me, avoid that model year"
-- Not always 100% certain: "I'm pretty sure it's the starter, but let's test it"
-- Show genuine concern: "Man, that's frustrating! Let's figure this out"
-
-BE AUTHENTIC: Talk like you're having coffee with a friend who needs car help. Keep responses conversational, not robotic. Use real mechanic language.
-
-Customer: "${userMessage}"
-
-Respond as REAL Alex - the mechanic, not the AI.`;
+Respond as a real human mechanic would.`;
         }
 
         function addMessage(sender, text) {
@@ -1593,7 +1482,7 @@ Respond as REAL Alex - the mechanic, not the AI.`;
             }
         }
 
-        // Phone Call System
+        // Phone Call System - SIMPLE
         async function initiateCall() {
             if (isOnCall) {
                 endCall();
@@ -1613,6 +1502,7 @@ Respond as REAL Alex - the mechanic, not the AI.`;
             // Play ringing sound
             playRingingSound();
             
+            // Ring for 10 seconds then answer
             setTimeout(() => {
                 // Call answered
                 isOnCall = true;
@@ -1626,22 +1516,14 @@ Respond as REAL Alex - the mechanic, not the AI.`;
                 // Start call timer
                 startCallTimer();
                 
-                // AI greeting for phone call - like real person
-                setTimeout(() => {
-                    const greetings = [
-                        "Hello, Alex's Auto Repair! This is Alex - what's going on with your car?",
-                        "Alex's shop, this is Alex speaking. What can I help you with today?",
-                        "Hello! Alex here. What's your car doing to you?",
-                        "Alex's Auto Repair, Alex speaking. How can I help?"
-                    ];
-                    const greeting = greetings[Math.floor(Math.random() * greetings.length)];
-                    addMessage('ai', greeting);
-                    
-                    // Enable continuous listening for phone call
-                    startContinuousListening();
-                }, 1000);
+                // Simple greeting - just like picking up phone
+                const greeting = "Hello?";
+                addMessage('ai', greeting);
                 
-            }, 3000); // Ring for 3 seconds
+                // Enable continuous listening
+                startContinuousListening();
+                
+            }, 10000); // Ring for EXACTLY 10 seconds
         }
 
         function endCall() {
@@ -1689,29 +1571,31 @@ Respond as REAL Alex - the mechanic, not the AI.`;
         }
 
         function playRingingSound() {
-            // Create ringing sound using Web Audio API
+            // Simple continuous ringing for 10 seconds
             const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
             
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            
-            oscillator.frequency.setValueAtTime(440, audioContext.currentTime);
-            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-            
-            // Ring pattern: beep beep pause
-            for (let i = 0; i < 3; i++) {
-                setTimeout(() => {
-                    oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-                    setTimeout(() => {
-                        oscillator.frequency.setValueAtTime(0, audioContext.currentTime);
-                    }, 200);
-                }, i * 600);
-            }
-            
-            oscillator.start();
-            setTimeout(() => oscillator.stop(), 3000);
+            // Ring pattern that repeats for 10 seconds
+            let ringCount = 0;
+            const ringInterval = setInterval(() => {
+                if (ringCount >= 15) { // Stop after 10 seconds
+                    clearInterval(ringInterval);
+                    return;
+                }
+                
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+                gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
+                
+                oscillator.start();
+                setTimeout(() => oscillator.stop(), 400);
+                
+                ringCount++;
+            }, 600);
         }
 
         function startContinuousListening() {
