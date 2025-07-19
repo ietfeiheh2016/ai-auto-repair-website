@@ -367,7 +367,7 @@ function buildPlumbingContext(userMessage) {
     const isEmergency = detectEmergency(userMessage);
     const detectedServices = detectServices(userMessage);
     
-    const systemPrompt = `You are PlumberBot, an expert AI assistant for ${plumbingKnowledge.businessInfo.name}, a professional plumbing company. You help customers with plumbing issues, provide quotes, and book appointments.
+    const systemPrompt = `You are Sarah, a friendly and professional virtual receptionist for ${plumbingKnowledge.businessInfo.name}, a professional plumbing company. You talk like a real person - warm, helpful, and conversational. Never mention that you're an AI or bot.
 
 BUSINESS INFO:
 - Company: ${plumbingKnowledge.businessInfo.name}
@@ -393,22 +393,24 @@ ${Object.entries(customerData).filter(([key, value]) => value).map(([key, value]
 
 CONVERSATION HISTORY:
 ${conversationHistory.slice(-3).map(conv => 
-    `Customer: ${conv.user}\nPlumberBot: ${conv.ai}`
+    `Customer: ${conv.user}\nSarah: ${conv.ai}`
 ).join('\n\n')}
 
 PERSONALITY & RESPONSE STYLE:
-- Be professional but friendly and reassuring
-- For emergencies: Show urgency, offer immediate help, get address quickly
-- For regular service: Be helpful, provide accurate pricing, offer scheduling
-- Ask follow-up questions to better understand the problem
-- Always mention your license and insurance for credibility
-- If they ask for pricing, provide exact amounts from the service list
-- If they want to book, collect: name, phone, address, preferred time
-- Keep responses concise but helpful (2-3 sentences max)
+- Talk like a real human receptionist - use natural expressions like "Oh no!", "Absolutely!", "No problem!"
+- For emergencies: Show genuine concern, be reassuring, get help on the way fast
+- For regular service: Be friendly and helpful, make them feel valued as a customer
+- Use conversational language: "Let me check that for you", "I can get someone out there"
+- Ask follow-up questions naturally: "What's going on with it?", "When did this start?"
+- Mention the business name naturally in conversation
+- If they ask for pricing, give exact amounts but explain what's included
+- If they want to book, collect info naturally: "What's a good number to reach you?"
+- Keep responses conversational and human (2-3 sentences, natural flow)
+- NEVER mention AI, bots, automation - you're just Sarah, the receptionist
 
 Current customer message: "${userMessage}"
 
-Respond as PlumberBot with expertise, empathy, and efficiency.`;
+Respond as Sarah the receptionist with warmth, expertise, and genuine helpfulness.`;
 
     return systemPrompt;
 }
@@ -500,24 +502,24 @@ function generatePlumbingFallback(message) {
     
     // Emergency fallback
     if (detectEmergency(message)) {
-        return "I understand this is an emergency! We provide 24/7 emergency plumbing service and can have a licensed technician to you within 30 minutes. What's your address so I can dispatch help immediately?";
+        return "Oh my! That sounds like an emergency. Don't worry, I can get someone out to you right away - we do 24/7 emergency service. Let me get your address so I can dispatch a technician within 30 minutes.";
     }
     
     // Service-specific fallbacks
     if (lowerMessage.includes('price') || lowerMessage.includes('cost') || lowerMessage.includes('quote')) {
-        return "I'd be happy to provide accurate pricing! Our rates start at $95 for basic repairs up to $850 for major work. What specific plumbing service do you need help with?";
+        return "Absolutely! I'd be happy to give you pricing on that. Our rates start at $95 for basic repairs and go up to about $850 for major work, but let me get you an exact quote. What specific service do you need?";
     }
     
     if (lowerMessage.includes('schedule') || lowerMessage.includes('appointment') || lowerMessage.includes('book')) {
-        return "I can schedule your appointment right now! We have openings as early as today. What type of plumbing service do you need, and what's a good time for you?";
+        return "Perfect! I can get you scheduled right now. We actually have some openings as early as today if you need it. What kind of plumbing work are you looking to get done?";
     }
     
     // General fallbacks
     const fallbacks = [
-        "I'm here to help with all your plumbing needs! We're licensed, insured, and ready to solve any plumbing problem. What can I help you with today?",
-        "As a professional plumbing service, we handle everything from simple repairs to complete renovations. What plumbing issue are you experiencing?",
-        "I'd love to help you with that! We offer expert plumbing services with upfront pricing and guaranteed work. Could you tell me more about what you need?",
-        "Our licensed plumbers are ready to help! Whether it's an emergency or routine service, we've got you covered. What's going on with your plumbing?"
+        "Hi there! I'm Sarah from ProPlumb Solutions. We handle all kinds of plumbing work - from quick fixes to big renovations. What's going on that I can help you with?",
+        "Hello! Thanks for calling ProPlumb Solutions. We're licensed and insured, and I'd love to help you out today. What plumbing issue are you dealing with?",
+        "Hey! I'm Sarah, and I'd be happy to help you with whatever plumbing situation you've got. We do everything from emergency repairs to bathroom remodels. What's happening?",
+        "Hi! You've reached ProPlumb Solutions. Whether it's an emergency or something you've been putting off, we can take care of it. What can I help you with today?"
     ];
     
     return fallbacks[Math.floor(Math.random() * fallbacks.length)];
@@ -534,7 +536,7 @@ function addDemoMessage(sender, message) {
     if (sender === 'ai') {
         messageDiv.innerHTML = `
             <div class="message-avatar">
-                <i class="fas fa-robot"></i>
+                <i class="fas fa-user-tie"></i>
             </div>
             <div class="message-content">
                 <div class="message-text">${message}</div>
@@ -577,7 +579,7 @@ function addFullMessage(sender, message) {
     if (sender === 'ai') {
         messageDiv.innerHTML = `
             <div class="message-avatar-full">
-                <i class="fas fa-robot"></i>
+                <i class="fas fa-user-tie"></i>
             </div>
             <div class="message-content-full">
                 <div class="message-text-full">${message}</div>
@@ -618,7 +620,7 @@ function showTypingIndicator() {
     typingDiv.className = 'demo-message ai-message typing-message';
     typingDiv.innerHTML = `
         <div class="message-avatar">
-            <i class="fas fa-robot"></i>
+            <i class="fas fa-user-tie"></i>
         </div>
         <div class="message-content">
             <div class="message-text typing-indicator-text">
@@ -627,7 +629,7 @@ function showTypingIndicator() {
                     <span></span>
                     <span></span>
                 </div>
-                PlumberBot is thinking...
+                Sarah is typing...
             </div>
         </div>
     `;
@@ -652,11 +654,11 @@ function showAIThinking() {
     thinkingDiv.className = 'ai-thinking-full';
     thinkingDiv.innerHTML = `
         <div class="thinking-avatar">
-            <i class="fas fa-robot"></i>
+            <i class="fas fa-user-tie"></i>
         </div>
         <div class="thinking-content">
             <div class="thinking-text">
-                PlumberBot is analyzing your plumbing issue...
+                Sarah is looking into that for you...
                 <div class="thinking-dots">
                     <span></span>
                     <span></span>
@@ -939,7 +941,7 @@ function showFeatureDemo(feature) {
 function startWelcomeSequence() {
     // Add initial demo message after page load
     setTimeout(() => {
-        addDemoMessage('ai', "Hello! I'm PlumberBot AI, your intelligent plumbing assistant. I'm here 24/7 to help customers with emergencies, quotes, and appointments. Try asking me about any plumbing situation!");
+        addDemoMessage('ai', "Hi there! I'm Sarah from ProPlumb Solutions. I'm here to help you with any plumbing needs - emergencies, regular repairs, or getting quotes. What's going on that I can help you with today?");
     }, 2000);
 }
 
