@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🤖 Revolutionary AI Chat Assistant | The Game-Changing Auto Repair Website</title>
+    <link rel="stylesheet" href="shiny-ai-converter-style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Floating AI Assistant Preview -->
+    <div class="floating-ai-preview" id="floating-ai">
+        <div class="ai-avatar-container">
+            <div class="ai-avatar">
+                <div class="ai-face">
+                    <div class="ai-eyes">
+                        <div class="eye left-eye">
+                            <div class="pupil"></div>
+                        </div>
+                        <div class="eye right-eye">
+                            <div class="pupil"></div>
+                        </div>
+                    </div>
+                    <div class="ai-mouth"></div>
+                </div>
+                <div class="ai-glow"></div>
+                <div class="ai-pulse"></div>
+            </div>
+            <div class="ai-status">
+                <span class="status-dot"></span>
+                <span class="status-text">AI Ready</span>
+            </div>
+        </div>
+        <div class="preview-message">
+            <p>👋 Hi! I'm your AI assistant. Click to see me in action!</p>
+        </div>
+    </div>
+
+    <!-- Hero Section - AI Focused -->
+    <section class="ai-hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <div class="ai-badge">
+                        <i class="fas fa-robot"></i>
+                        <span>Revolutionary AI Technology</span>
+                        <div class="badge-glow"></div>
+                    </div>
+                    <h1>Meet Your New <span class="ai-gradient-text">AI Employee</span> That Never Sleeps</h1>
+                    <p class="hero-subtitle">Watch our AI assistant book appointments, answer questions, and grow your auto shop 24/7. This is the game changer every shop owner needs.</p>
+                    
+                    <div class="ai-capabilities">
+                        <div class="capability-item">
+                            <div class="capability-icon">
+                                <i class="fas fa-brain"></i>
+                                <div class="icon-glow"></div>
+                            </div>
+                            <div class="capability-content">
+                                <h3>Learns Your Business</h3>
+                                <p>Knows your services, prices, and availability</p>
+                            </div>
+                        </div>
+                        <div class="capability-item">
+                            <div class="capability-icon">
+                                <i class="fas fa-comments"></i>
+                                <div class="icon-glow"></div>
+                            </div>
+                            <div class="capability-content">
+                                <h3>Natural Conversations</h3>
+                                <p>Talks like your best employee</p>
+                            </div>
+                        </div>
+                        <div class="capability-item">
+                            <div class="capability-icon">
+                                <i class="fas fa-calendar-plus"></i>
+                                <div class="icon-glow"></div>
+                            </div>
+                            <div class="capability-content">
+                                <h3>Books Appointments</h3>
+                                <p>Schedules customers instantly</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cta-section">
+                        <button class="ai-cta-button" onclick="startAIDemo()">
+                            <i class="fas fa-play"></i>
+                            <span>Talk to the AI Now</span>
+                            <div class="button-glow"></div>
+                        </button>
+                        <p class="guarantee-text">✨ See the magic happen live - no sign-up required</p>
+                    </div>
+                </div>
+
+                <div class="hero-ai-demo">
+                    <div class="ai-chat-container">
+                        <div class="chat-window">
+                            <div class="chat-header">
+                                <div class="ai-avatar-header">
+                                    <div class="avatar-image">
+                                        <div class="ai-face-header">
+                                            <div class="eyes-header">
+                                                <div class="eye-header"></div>
+                                                <div class="eye-header"></div>
+                                            </div>
+                                            <div class="mouth-header"></div>
+                                        </div>
+                                        <div class="avatar-glow"></div>
+                                    </div>
+                                    <div class="ai-info">
+                                        <h4>AI Assistant</h4>
+                                        <span class="ai-status-text">
+                                            <span class="status-dot-header"></span>
+                                            Ready to help
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="chat-controls">
+                                    <button class="control-btn" onclick="toggleVoice()" title="Voice Recognition">
+                                        <i class="fas fa-microphone"></i>
+                                    </button>
+                                    <button class="control-btn" onclick="toggleSpeaker()" title="Text to Speech">
+                                        <i class="fas fa-volume-up"></i>
+                                    </button>
+                                    <button class="control-btn" onclick="resetChat()" title="Reset Chat">
+                                        <i class="fas fa-redo"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="chat-messages" id="ai-chat-messages">
+                                <div class="ai-message">
+                                    <div class="message-avatar">
+                                        <div class="avatar-mini">
+                                            <div class="mini-glow"></div>
+                                        </div>
+                                    </div>
+                                    <div class="message-content">
+                                        <div class="message-bubble ai-bubble">
+                                            <p>👋 Hi! I'm your AI assistant. I can help you with:</p>
+                                            <ul class="ai-services">
+                                                <li>✅ Booking appointments</li>
+                                                <li>✅ Service information & pricing</li>
+                                                <li>✅ Availability checking</li>
+                                                <li>✅ Customer support</li>
+                                            </ul>
+                                            <p>What would you like to know about our auto repair services?</p>
+                                        </div>
+                                        <div class="message-time">Just now</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="chat-input-section">
+                                <div class="quick-suggestions" id="quick-suggestions">
+                                    <button class="suggestion-pill" onclick="sendQuickMessage('I need an oil change')">
+                                        <i class="fas fa-oil-can"></i>
+                                        I need an oil change
+                                    </button>
+                                    <button class="suggestion-pill" onclick="sendQuickMessage('How much for brake repair?')">
+                                        <i class="fas fa-tools"></i>
+                                        How much for brake repair?
+                                    </button>
+                                    <button class="suggestion-pill" onclick="sendQuickMessage('Book an appointment')">
+                                        <i class="fas fa-calendar"></i>
+                                        Book an appointment
+                                    </button>
+                                    <button class="suggestion-pill" onclick="sendQuickMessage('What are your hours?')">
+                                        <i class="fas fa-clock"></i>
+                                        What are your hours?
+                                    </button>
+                                </div>
+                                
+                                <div class="chat-input-container">
+                                    <input type="text" id="ai-chat-input" placeholder="Type your message..." onkeypress="handleAIInput(event)">
+                                    <button class="voice-input-btn" id="voice-btn" onclick="startVoiceInput()">
+                                        <i class="fas fa-microphone"></i>
+                                        <div class="voice-animation"></div>
+                                    </button>
+                                    <button class="send-btn" onclick="sendAIMessage()">
+                                        <i class="fas fa-paper-plane"></i>
+                                        <div class="send-glow"></div>
+                                    </button>
+                                </div>
+                                
+                                <div class="ai-typing-indicator" id="ai-typing" style="display: none;">
+                                    <div class="typing-avatar">
+                                        <div class="typing-glow"></div>
+                                    </div>
+                                    <div class="typing-text">
+                                        <span>AI is thinking</span>
+                                        <div class="thinking-dots">
+                                            <span></span><span></span><span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="ai-features-sidebar">
+                            <h4>🚀 AI Capabilities</h4>
+                            <div class="feature-items">
+                                <div class="feature-item active" data-feature="chat">
+                                    <i class="fas fa-comments"></i>
+                                    <span>Smart Chat</span>
+                                    <div class="feature-glow"></div>
+                                </div>
+                                <div class="feature-item" data-feature="booking">
+                                    <i class="fas fa-calendar-check"></i>
+                                    <span>Auto Booking</span>
+                                </div>
+                                <div class="feature-item" data-feature="voice">
+                                    <i class="fas fa-microphone"></i>
+                                    <span>Voice Input</span>
+                                </div>
+                                <div class="feature-item" data-feature="analytics">
+                                    <i class="fas fa-chart-bar"></i>
+                                    <span>Lead Analytics</span>
+                                </div>
+                                <div class="feature-item" data-feature="learning">
+                                    <i class="fas fa-brain"></i>
+                                    <span>Machine Learning</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="ai-stats-overlay">
+                        <div class="stat-item">
+                            <div class="stat-icon">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-number" id="messages-count">127</span>
+                                <span class="stat-label">Messages Today</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon">
+                                <i class="fas fa-calendar-plus"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-number" id="bookings-count">23</span>
+                                <span class="stat-label">Appointments Booked</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-number" id="leads-count">18</span>
+                                <span class="stat-label">New Leads</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Capabilities Showcase -->
+    <section class="ai-showcase-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Watch the AI in Action</h2>
+                <p>See how our AI assistant handles real customer conversations and books appointments automatically</p>
+            </div>
+
+            <div class="showcase-tabs">
+                <button class="showcase-tab active" onclick="showShowcase('conversation')">
+                    <i class="fas fa-comments"></i>
+                    <span>Live Conversation</span>
+                </button>
+                <button class="showcase-tab" onclick="showShowcase('booking')">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Appointment Booking</span>
+                </button>
+                <button class="showcase-tab" onclick="showShowcase('learning')">
+                    <i class="fas fa-brain"></i>
+                    <span>AI Learning</span>
+                </button>
+                <button class="showcase-tab" onclick="showShowcase('analytics')">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Customer Analytics</span>
+                </button>
+            </div>
+
+            <div class="showcase-content">
+                <!-- Conversation Showcase -->
+                <div class="showcase-panel active" id="conversation-showcase">
+                    <div class="conversation-demo">
+                        <h3>🎭 Real Customer Conversation Simulation</h3>
+                        <div class="conversation-player">
+                            <div class="player-controls">
+                                <button class="play-btn" onclick="playConversation()">
+                                    <i class="fas fa-play"></i>
+                                    Play Conversation
+                                </button>
+                                <button class="pause-btn" onclick="pauseConversation()" style="display: none;">
+                                    <i class="fas fa-pause"></i>
+                                    Pause
+                                </button>
+                                <div class="conversation-progress">
+                                    <div class="progress-bar"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="conversation-messages" id="conversation-messages">
+                                <!-- Dynamic conversation will be inserted here -->
+                            </div>
+                        </div>
+                        
+                        <div class="conversation-insights">
+                            <h4>🧠 AI Insights During Conversation</h4>
+                            <div class="insights-grid">
+                                <div class="insight-item">
+                                    <i class="fas fa-user-check"></i>
+                                    <span>Customer identified as returning client</span>
+                                </div>
+                                <div class="insight-item">
+                                    <i class="fas fa-car"></i>
+                                    <span>Vehicle: 2019 Honda Civic (from history)</span>
+                                </div>
+                                <div class="insight-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span>Preferred time: Mornings (learned)</span>
+                                </div>
+                                <div class="insight-item">
+                                    <i class="fas fa-star"></i>
+                                    <span>High-value customer (priority booking)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Booking Showcase -->
+                <div class="showcase-panel" id="booking-showcase">
+                    <div class="booking-demo">
+                        <h3>📅 Intelligent Appointment Booking</h3>
+                        <div class="booking-flow">
+                            <div class="booking-step active" data-step="1">
+                                <div class="step-header">
+                                    <div class="step-number">1</div>
+                                    <h4>Service Selection</h4>
+                                </div>
+                                <div class="step-content">
+                                    <p>AI analyzes customer needs and suggests appropriate services</p>
+                                    <div class="service-suggestions">
+                                        <div class="service-card">
+                                            <i class="fas fa-oil-can"></i>
+                                            <span>Oil Change - $39.99</span>
+                                            <div class="card-glow"></div>
+                                        </div>
+                                        <div class="service-card">
+                                            <i class="fas fa-tools"></i>
+                                            <span>Brake Inspection - Free</span>
+                                            <div class="card-glow"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="booking-step" data-step="2">
+                                <div class="step-header">
+                                    <div class="step-number">2</div>
+                                    <h4>Smart Scheduling</h4>
+                                </div>
+                                <div class="step-content">
+                                    <p>AI checks availability and customer preferences</p>
+                                    <div class="schedule-grid">
+                                        <div class="time-slot available">
+                                            <span>Tomorrow 9:00 AM</span>
+                                            <div class="slot-status">✅ Available</div>
+                                        </div>
+                                        <div class="time-slot preferred">
+                                            <span>Tomorrow 10:00 AM</span>
+                                            <div class="slot-status">⭐ Preferred</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="booking-step" data-step="3">
+                                <div class="step-header">
+                                    <div class="step-number">3</div>
+                                    <h4>Confirmation & Follow-up</h4>
+                                </div>
+                                <div class="step-content">
+                                    <p>Instant confirmation with automated reminders</p>
+                                    <div class="confirmation-preview">
+                                        <div class="confirmation-card">
+                                            <h5>✅ Appointment Confirmed</h5>
+                                            <p>Oil Change - Tomorrow 10:00 AM</p>
+                                            <div class="reminder-schedule">
+                                                <span>📱 SMS reminder: 1 day before</span>
+                                                <span>📧 Email reminder: 2 hours before</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button class="demo-booking-btn" onclick="startBookingDemo()">
+                            <i class="fas fa-calendar-plus"></i>
+                            Start Booking Demo
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Learning Showcase -->
+                <div class="showcase-panel" id="learning-showcase">
+                    <div class="learning-demo">
+                        <h3>🧠 AI Learning & Adaptation</h3>
+                        <div class="learning-visualization">
+                            <div class="brain-container">
+                                <div class="ai-brain">
+                                    <div class="neural-network">
+                                        <div class="neuron" data-type="input">
+                                            <div class="neuron-glow"></div>
+                                        </div>
+                                        <div class="neuron" data-type="hidden">
+                                            <div class="neuron-glow"></div>
+                                        </div>
+                                        <div class="neuron" data-type="output">
+                                            <div class="neuron-glow"></div>
+                                        </div>
+                                    </div>
+                                    <div class="synapses">
+                                        <div class="synapse"></div>
+                                        <div class="synapse"></div>
+                                        <div class="synapse"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="learning-metrics">
+                                <h4>Learning Progress</h4>
+                                <div class="metric-bars">
+                                    <div class="metric-bar">
+                                        <span>Customer Preferences</span>
+                                        <div class="bar">
+                                            <div class="fill" style="width: 87%"></div>
+                                        </div>
+                                        <span>87%</span>
+                                    </div>
+                                    <div class="metric-bar">
+                                        <span>Service Knowledge</span>
+                                        <div class="bar">
+                                            <div class="fill" style="width: 94%"></div>
+                                        </div>
+                                        <span>94%</span>
+                                    </div>
+                                    <div class="metric-bar">
+                                        <span>Booking Accuracy</span>
+                                        <div class="bar">
+                                            <div class="fill" style="width: 98%"></div>
+                                        </div>
+                                        <span>98%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="learning-examples">
+                            <h4>What the AI Learns</h4>
+                            <div class="examples-grid">
+                                <div class="example-card">
+                                    <i class="fas fa-user-clock"></i>
+                                    <h5>Customer Patterns</h5>
+                                    <p>John prefers morning appointments and drives a Honda Civic</p>
+                                </div>
+                                <div class="example-card">
+                                    <i class="fas fa-wrench"></i>
+                                    <h5>Service Correlations</h5>
+                                    <p>Customers who get oil changes often need tire rotations</p>
+                                </div>
+                                <div class="example-card">
+                                    <i class="fas fa-chart-line"></i>
+                                    <h5>Seasonal Trends</h5>
+                                    <p>Winter brings more battery and heating system issues</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analytics Showcase -->
+                <div class="showcase-panel" id="analytics-showcase">
+                    <div class="analytics-demo">
+                        <h3>📊 Real-Time Customer Analytics</h3>
+                        <div class="analytics-dashboard">
+                            <div class="dashboard-widgets">
+                                <div class="widget">
+                                    <div class="widget-header">
+                                        <h4>Today's Performance</h4>
+                                        <i class="fas fa-chart-line"></i>
+                                    </div>
+                                    <div class="widget-content">
+                                        <div class="big-number">
+                                            <span class="number" id="today-conversations">47</span>
+                                            <span class="label">Conversations</span>
+                                        </div>
+                                        <div class="small-stats">
+                                            <div class="small-stat">
+                                                <span class="value">23</span>
+                                                <span class="name">Bookings</span>
+                                            </div>
+                                            <div class="small-stat">
+                                                <span class="value">89%</span>
+                                                <span class="name">Satisfaction</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="widget">
+                                    <div class="widget-header">
+                                        <h4>Lead Quality Score</h4>
+                                        <i class="fas fa-target"></i>
+                                    </div>
+                                    <div class="widget-content">
+                                        <div class="quality-score">
+                                            <div class="score-circle">
+                                                <svg viewBox="0 0 100 100">
+                                                    <circle cx="50" cy="50" r="45" fill="none" stroke="#e2e8f0" stroke-width="8"/>
+                                                    <circle cx="50" cy="50" r="45" fill="none" stroke="#10b981" stroke-width="8" 
+                                                            stroke-dasharray="283" stroke-dashoffset="56" stroke-linecap="round"/>
+                                                </svg>
+                                                <div class="score-text">
+                                                    <span class="score">A+</span>
+                                                    <span class="percentage">84%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="widget wide">
+                                    <div class="widget-header">
+                                        <h4>Customer Journey</h4>
+                                        <i class="fas fa-route"></i>
+                                    </div>
+                                    <div class="widget-content">
+                                        <div class="journey-flow">
+                                            <div class="journey-step">
+                                                <div class="step-icon">
+                                                    <i class="fas fa-mouse-pointer"></i>
+                                                </div>
+                                                <span>Website Visit</span>
+                                                <div class="step-count">127</div>
+                                            </div>
+                                            <div class="journey-arrow">→</div>
+                                            <div class="journey-step">
+                                                <div class="step-icon">
+                                                    <i class="fas fa-comments"></i>
+                                                </div>
+                                                <span>AI Chat</span>
+                                                <div class="step-count">89</div>
+                                            </div>
+                                            <div class="journey-arrow">→</div>
+                                            <div class="journey-step">
+                                                <div class="step-icon">
+                                                    <i class="fas fa-calendar-check"></i>
+                                                </div>
+                                                <span>Booking</span>
+                                                <div class="step-count">34</div>
+                                            </div>
+                                            <div class="journey-arrow">→</div>
+                                            <div class="journey-step">
+                                                <div class="step-icon">
+                                                    <i class="fas fa-handshake"></i>
+                                                </div>
+                                                <span>Customer</span>
+                                                <div class="step-count">32</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Features Deep Dive -->
+    <section class="ai-features-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Advanced AI Features That Amaze Customers</h2>
+                <p>Every feature designed to wow your customers and grow your business</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-microphone"></i>
+                        <div class="icon-pulse"></div>
+                    </div>
+                    <h3>Voice Recognition</h3>
+                    <p>Customers can speak naturally to the AI using voice input</p>
+                    <div class="feature-demo">
+                        <button class="demo-btn" onclick="demoVoiceRecognition()">
+                            <i class="fas fa-play"></i>
+                            Try Voice Demo
+                        </button>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-volume-up"></i>
+                        <div class="icon-pulse"></div>
+                    </div>
+                    <h3>Text-to-Speech</h3>
+                    <p>AI responds with natural-sounding voice for accessibility</p>
+                    <div class="feature-demo">
+                        <button class="demo-btn" onclick="demoTextToSpeech()">
+                            <i class="fas fa-play"></i>
+                            Hear AI Voice
+                        </button>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                        <div class="icon-pulse"></div>
+                    </div>
+                    <h3>Smart Learning</h3>
+                    <p>Remembers customer preferences and improves over time</p>
+                    <div class="feature-demo">
+                        <button class="demo-btn" onclick="demoLearning()">
+                            <i class="fas fa-eye"></i>
+                            See Learning
+                        </button>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-friends"></i>
+                        <div class="icon-pulse"></div>
+                    </div>
+                    <h3>Customer Profiles</h3>
+                    <p>Builds detailed profiles for personalized service</p>
+                    <div class="feature-demo">
+                        <button class="demo-btn" onclick="demoProfiles()">
+                            <i class="fas fa-user"></i>
+                            View Profiles
+                        </button>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-bar"></i>
+                        <div class="icon-pulse"></div>
+                    </div>
+                    <h3>Lead Scoring</h3>
+                    <p>Automatically identifies high-value potential customers</p>
+                    <div class="feature-demo">
+                        <button class="demo-btn" onclick="demoLeadScoring()">
+                            <i class="fas fa-star"></i>
+                            See Scoring
+                        </button>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-envelope-open-text"></i>
+                        <div class="icon-pulse"></div>
+                    </div>
+                    <h3>Follow-up System</h3>
+                    <p>Sends personalized follow-ups to convert leads</p>
+                    <div class="feature-demo">
+                        <button class="demo-btn" onclick="demoFollowUp()">
+                            <i class="fas fa-paper-plane"></i>
+                            See Follow-ups
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Pricing -->
+    <section class="ai-pricing-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Get This Game-Changing AI Assistant</h2>
+                <p>Complete package with AI that works like magic</p>
+            </div>
+
+            <div class="pricing-showcase">
+                <div class="pricing-card premium">
+                    <div class="pricing-header">
+                        <div class="ai-badge-large">
+                            <i class="fas fa-robot"></i>
+                            <span>AI-Powered Website</span>
+                            <div class="badge-shine"></div>
+                        </div>
+                        <h3>Complete AI Auto Shop System</h3>
+                        <p>Revolutionary AI assistant + professional website</p>
+                    </div>
+
+                    <div class="ai-features-list">
+                        <h4>🤖 Advanced AI Features</h4>
+                        <div class="features-columns">
+                            <div class="feature-column">
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Natural conversation AI</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Voice recognition & speech</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Smart appointment booking</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Customer learning & memory</span>
+                                </div>
+                            </div>
+                            <div class="feature-column">
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Lead scoring & analytics</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Automated follow-ups</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>24/7 customer support</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Multi-language support</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="website-features-list">
+                        <h4>🌐 Professional Website Included</h4>
+                        <div class="features-columns">
+                            <div class="feature-column">
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Custom design for your shop</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Mobile-optimized responsive design</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>SEO optimization for Google</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Service listings with pricing</span>
+                                </div>
+                            </div>
+                            <div class="feature-column">
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Customer testimonials section</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Contact forms and business info</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Photo gallery and media</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Social media integration</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pricing-value">
+                        <div class="value-breakdown">
+                            <div class="value-item">
+                                <span>AI Assistant Development & Training</span>
+                                <span>$8,500</span>
+                            </div>
+                            <div class="value-item">
+                                <span>Professional Website Design</span>
+                                <span>$4,500</span>
+                            </div>
+                            <div class="value-item">
+                                <span>Voice Recognition System</span>
+                                <span>$3,200</span>
+                            </div>
+                            <div class="value-item">
+                                <span>Analytics & Learning Engine</span>
+                                <span>$2,800</span>
+                            </div>
+                            <div class="value-item">
+                                <span>Setup, Training & Support</span>
+                                <span>$1,500</span>
+                            </div>
+                            <div class="value-total">
+                                <span>Total Value:</span>
+                                <span>$20,500</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pricing-offer">
+                        <div class="price-container">
+                            <div class="price-label">Your Investment Today:</div>
+                            <div class="price-amount">$3,997</div>
+                            <div class="savings">Save $16,503 (80% OFF!)</div>
+                        </div>
+                        
+                        <div class="bonus-section">
+                            <h5>🎁 Limited Time Bonuses</h5>
+                            <div class="bonus-items">
+                                <div class="bonus-item">
+                                    <i class="fas fa-gift"></i>
+                                    <span>6 months free AI training (value $2,400)</span>
+                                </div>
+                                <div class="bonus-item">
+                                    <i class="fas fa-headset"></i>
+                                    <span>Priority support & maintenance (value $1,200)</span>
+                                </div>
+                                <div class="bonus-item">
+                                    <i class="fas fa-chart-line"></i>
+                                    <span>Advanced analytics dashboard (value $800)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="guarantee-section">
+                        <div class="guarantee-badge">
+                            <i class="fas fa-shield-check"></i>
+                            <span>60-Day Money-Back Guarantee</span>
+                        </div>
+                        <p>If the AI doesn't amaze your customers and book more appointments within 60 days, get your full refund.</p>
+                    </div>
+
+                    <button class="order-ai-button" onclick="orderAISystem()">
+                        <i class="fas fa-robot"></i>
+                        <span>Get My AI Assistant Now</span>
+                        <div class="button-magic"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="shiny-ai-converter-script.js"></script>
+</body>
+</html>
