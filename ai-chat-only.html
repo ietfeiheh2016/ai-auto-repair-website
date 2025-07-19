@@ -392,6 +392,9 @@
                 <button class="control-btn" onclick="toggleSpeaker()" title="Text to Speech">
                     <i class="fas fa-volume-up"></i>
                 </button>
+                <button class="control-btn" onclick="showVoiceSelector()" title="Select Premium Voice">
+                    <i class="fas fa-user-tie"></i>
+                </button>
             </div>
         </div>
 
@@ -466,6 +469,72 @@
         // Google AI Configuration - Your API Key
         const GOOGLE_AI_API_KEY = 'AIzaSyD-0Jyl1r9q8lzkEBVW-sR5dAD6VCDdAoY';
         const GOOGLE_AI_ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
+        
+        // Google Cloud Text-to-Speech Configuration
+        const GOOGLE_TTS_ENDPOINT = 'https://texttospeech.googleapis.com/v1/text:synthesize';
+        
+        // Premium HD Voice Options
+        const PREMIUM_VOICES = {
+            'neural2-female': {
+                voice: {
+                    languageCode: 'en-US',
+                    name: 'en-US-Neural2-F', // Ultra HD female voice
+                    ssmlGender: 'FEMALE'
+                },
+                audioConfig: {
+                    audioEncoding: 'MP3',
+                    pitch: 0.2,
+                    speakingRate: 1.05,
+                    volumeGainDb: 2.0,
+                    effectsProfileId: ['telephony-class-application']
+                }
+            },
+            'neural2-male': {
+                voice: {
+                    languageCode: 'en-US',
+                    name: 'en-US-Neural2-D', // Ultra HD male voice
+                    ssmlGender: 'MALE'
+                },
+                audioConfig: {
+                    audioEncoding: 'MP3',
+                    pitch: -0.1,
+                    speakingRate: 1.0,
+                    volumeGainDb: 2.0,
+                    effectsProfileId: ['telephony-class-application']
+                }
+            },
+            'wavenet-female': {
+                voice: {
+                    languageCode: 'en-US',
+                    name: 'en-US-Wavenet-F', // Premium WaveNet female
+                    ssmlGender: 'FEMALE'
+                },
+                audioConfig: {
+                    audioEncoding: 'MP3',
+                    pitch: 0.0,
+                    speakingRate: 1.0,
+                    volumeGainDb: 1.5,
+                    effectsProfileId: ['telephony-class-application']
+                }
+            },
+            'studio-female': {
+                voice: {
+                    languageCode: 'en-US',
+                    name: 'en-US-Studio-O', // Studio quality female
+                    ssmlGender: 'FEMALE'
+                },
+                audioConfig: {
+                    audioEncoding: 'MP3',
+                    pitch: 0.1,
+                    speakingRate: 1.02,
+                    volumeGainDb: 2.5,
+                    effectsProfileId: ['telephony-class-application']
+                }
+            }
+        };
+        
+        // Current selected voice (default to Neural2 female)
+        let currentVoice = 'neural2-female';
         
         // Auto Repair Knowledge Base
         const autoRepairKnowledge = {
@@ -885,18 +954,15 @@ Respond as Alex in a natural, conversational way. If they're asking about servic
             toggleVoice();
         }
 
-        function speakText(text) {
-            if (!speechEnabled || !('speechSynthesis' in window)) {
-                console.warn('Text-to-speech not available');
+        async function speakText(text) {
+            if (!speechEnabled) {
+                console.warn('Text-to-speech disabled');
                 return;
             }
             
-            // Cancel any ongoing speech
-            speechSynthesis.cancel();
-            
             // Clean text for speech - remove emojis and HTML
             const cleanText = text
-                .replace(/[🤖✅🚀📅🕐📍💰🔧👋❌🚫🔇🎤🌐]/g, '')
+                .replace(/[🤖✅🚀📅🕐📍💰🔧👋❌🚫🔇🎤🌐🔊]/g, '')
                 .replace(/<[^>]*>/g, '')
                 .replace(/\n/g, ' ')
                 .replace(/\s+/g, ' ')
@@ -904,60 +970,188 @@ Respond as Alex in a natural, conversational way. If they're asking about servic
             
             if (!cleanText) return;
             
-            const utterance = new SpeechSynthesisUtterance(cleanText);
-            utterance.rate = 0.9;
-            utterance.pitch = 1.0;
-            utterance.volume = 0.9;
-            utterance.lang = 'en-US';
-            
-            // Get the best available voice
-            const voices = speechSynthesis.getVoices();
-            let selectedVoice = null;
-            
-            // Priority order for voice selection
-            const voicePreferences = [
-                'Google US English',
-                'Microsoft Zira',
-                'Alex',
-                'Samantha'
-            ];
-            
-            for (const preference of voicePreferences) {
-                selectedVoice = voices.find(voice => 
-                    voice.name.includes(preference) && voice.lang.includes('en')
-                );
-                if (selectedVoice) break;
+            try {
+                // Try Google Cloud TTS first (Premium HD voices)
+                const audioData = await callGoogleTTS(cleanText);
+                if (audioData) {
+                    await playPremiumAudio(audioData);
+                    return;
+                }
+            } catch (error) {
+                console.warn('Google Cloud TTS failed, falling back to browser TTS:', error);
             }
             
-            // Fallback to any English voice
-            if (!selectedVoice) {
-                selectedVoice = voices.find(voice => 
-                    voice.lang.includes('en-US') || voice.lang.includes('en')
-                );
+            // Fallback to browser TTS if Google Cloud fails
+            await fallbackBrowserTTS(cleanText);
+        }
+
+        async function callGoogleTTS(text) {
+            const voiceConfig = PREMIUM_VOICES[currentVoice];
+            const voiceName = voiceConfig.voice.name;
+            
+            showVoiceStatus(`🎤 Generating premium ${voiceName} voice...`);
+            updateSpeakerUI(true);
+            
+            const requestBody = {
+                input: { text: text },
+                voice: voiceConfig.voice,
+                audioConfig: voiceConfig.audioConfig
+            };
+            
+            try {
+                const response = await fetch(`${GOOGLE_TTS_ENDPOINT}?key=${GOOGLE_AI_API_KEY}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(`Google TTS API error: ${response.status} - ${errorData.error?.message || 'Unknown error'}`);
+                }
+                
+                const data = await response.json();
+                return data.audioContent;
+            } catch (error) {
+                console.error('Google Cloud TTS error:', error);
+                
+                // Try fallback voice if current voice fails
+                if (currentVoice !== 'neural2-female') {
+                    console.log('Trying fallback voice...');
+                    const fallbackVoice = 'neural2-female';
+                    const fallbackConfig = PREMIUM_VOICES[fallbackVoice];
+                    
+                    const fallbackBody = {
+                        input: { text: text },
+                        voice: fallbackConfig.voice,
+                        audioConfig: fallbackConfig.audioConfig
+                    };
+                    
+                    try {
+                        const fallbackResponse = await fetch(`${GOOGLE_TTS_ENDPOINT}?key=${GOOGLE_AI_API_KEY}`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(fallbackBody)
+                        });
+                        
+                        if (fallbackResponse.ok) {
+                            const fallbackData = await fallbackResponse.json();
+                            return fallbackData.audioContent;
+                        }
+                    } catch (fallbackError) {
+                        console.error('Fallback voice also failed:', fallbackError);
+                    }
+                }
+                
+                return null;
             }
-            
-            if (selectedVoice) {
-                utterance.voice = selectedVoice;
-            }
-            
-            // Add event listeners for feedback
-            utterance.onstart = function() {
-                showVoiceStatus('🔊 Speaking...');
-                updateSpeakerUI(true);
-            };
-            
-            utterance.onend = function() {
-                hideVoiceStatus();
-                updateSpeakerUI(false);
-            };
-            
-            utterance.onerror = function(event) {
-                console.error('Speech synthesis error:', event.error);
-                hideVoiceStatus();
-                updateSpeakerUI(false);
-            };
-            
-            speechSynthesis.speak(utterance);
+        }
+
+        async function playPremiumAudio(audioContent) {
+            return new Promise((resolve, reject) => {
+                try {
+                    // Convert base64 to audio blob
+                    const audioData = atob(audioContent);
+                    const audioArray = new Uint8Array(audioData.length);
+                    for (let i = 0; i < audioData.length; i++) {
+                        audioArray[i] = audioData.charCodeAt(i);
+                    }
+                    const audioBlob = new Blob([audioArray], { type: 'audio/mp3' });
+                    const audioUrl = URL.createObjectURL(audioBlob);
+                    
+                    const audio = new Audio(audioUrl);
+                    
+                    audio.onloadstart = function() {
+                        showVoiceStatus('🔊 Premium HD voice speaking...');
+                    };
+                    
+                    audio.onplay = function() {
+                        updateSpeakerUI(true);
+                    };
+                    
+                    audio.onended = function() {
+                        hideVoiceStatus();
+                        updateSpeakerUI(false);
+                        URL.revokeObjectURL(audioUrl);
+                        resolve();
+                    };
+                    
+                    audio.onerror = function(error) {
+                        console.error('Audio playback error:', error);
+                        hideVoiceStatus();
+                        updateSpeakerUI(false);
+                        URL.revokeObjectURL(audioUrl);
+                        reject(error);
+                    };
+                    
+                    audio.play();
+                } catch (error) {
+                    reject(error);
+                }
+            });
+        }
+
+        async function fallbackBrowserTTS(cleanText) {
+            return new Promise((resolve) => {
+                if (!('speechSynthesis' in window)) {
+                    console.warn('Browser TTS not available');
+                    resolve();
+                    return;
+                }
+                
+                // Cancel any ongoing speech
+                speechSynthesis.cancel();
+                
+                const utterance = new SpeechSynthesisUtterance(cleanText);
+                utterance.rate = 0.9;
+                utterance.pitch = 1.0;
+                utterance.volume = 0.9;
+                utterance.lang = 'en-US';
+                
+                // Get the best available browser voice
+                const voices = speechSynthesis.getVoices();
+                const voicePreferences = ['Google US English', 'Microsoft Zira', 'Alex', 'Samantha'];
+                
+                let selectedVoice = null;
+                for (const preference of voicePreferences) {
+                    selectedVoice = voices.find(voice => 
+                        voice.name.includes(preference) && voice.lang.includes('en')
+                    );
+                    if (selectedVoice) break;
+                }
+                
+                if (!selectedVoice) {
+                    selectedVoice = voices.find(voice => 
+                        voice.lang.includes('en-US') || voice.lang.includes('en')
+                    );
+                }
+                
+                if (selectedVoice) {
+                    utterance.voice = selectedVoice;
+                }
+                
+                utterance.onstart = function() {
+                    showVoiceStatus('🔊 Browser voice speaking...');
+                    updateSpeakerUI(true);
+                };
+                
+                utterance.onend = function() {
+                    hideVoiceStatus();
+                    updateSpeakerUI(false);
+                    resolve();
+                };
+                
+                utterance.onerror = function(event) {
+                    console.error('Browser TTS error:', event.error);
+                    hideVoiceStatus();
+                    updateSpeakerUI(false);
+                    resolve();
+                };
+                
+                speechSynthesis.speak(utterance);
+            });
         }
 
         function updateSpeakerUI(speaking) {
@@ -969,6 +1163,154 @@ Respond as Alex in a natural, conversational way. If they're asking about servic
                 } else {
                     speakerBtn.style.color = speechEnabled ? '' : '#ccc';
                 }
+            }
+        }
+
+        function showVoiceSelector() {
+            const modal = createVoiceSelectorModal();
+            document.body.appendChild(modal);
+        }
+
+        function createVoiceSelectorModal() {
+            const modal = document.createElement('div');
+            modal.id = 'voice-selector-modal';
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.8);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10000;
+            `;
+            
+            const voiceOptions = [
+                { key: 'neural2-female', name: '🎭 Neural2 Female', desc: 'Ultra HD - Most Natural Female Voice' },
+                { key: 'neural2-male', name: '🎭 Neural2 Male', desc: 'Ultra HD - Most Natural Male Voice' },
+                { key: 'studio-female', name: '🎙️ Studio Female', desc: 'Studio Quality - Professional Female' },
+                { key: 'wavenet-female', name: '🌊 WaveNet Female', desc: 'Premium WaveNet Technology' }
+            ];
+            
+            let optionsHTML = voiceOptions.map(voice => `
+                <div class="voice-option ${currentVoice === voice.key ? 'selected' : ''}" onclick="selectVoice('${voice.key}')">
+                    <div class="voice-name">${voice.name}</div>
+                    <div class="voice-desc">${voice.desc}</div>
+                    <button class="test-voice-btn" onclick="testVoice('${voice.key}', event)">▶️ Test</button>
+                </div>
+            `).join('');
+            
+            modal.innerHTML = `
+                <div style="
+                    background: white;
+                    border-radius: 20px;
+                    padding: 40px;
+                    max-width: 600px;
+                    width: 90%;
+                    max-height: 80vh;
+                    overflow-y: auto;
+                ">
+                    <h2 style="font-size: 32px; color: #4285f4; margin-bottom: 20px; text-align: center;">
+                        🎤 Select Premium Voice
+                    </h2>
+                    <p style="font-size: 18px; color: #666; text-align: center; margin-bottom: 30px;">
+                        Choose from Google's most advanced AI voices
+                    </p>
+                    <div style="display: grid; gap: 15px;">
+                        ${optionsHTML}
+                    </div>
+                    <div style="text-align: center; margin-top: 30px;">
+                        <button onclick="closeVoiceSelector()" style="
+                            background: #4285f4;
+                            color: white;
+                            border: none;
+                            padding: 15px 30px;
+                            border-radius: 10px;
+                            font-size: 18px;
+                            font-weight: bold;
+                            cursor: pointer;
+                        ">Close</button>
+                    </div>
+                </div>
+            `;
+            
+            // Add styles
+            const style = document.createElement('style');
+            style.textContent = `
+                .voice-option {
+                    background: #f8f9fa;
+                    border: 3px solid #e0e0e0;
+                    border-radius: 15px;
+                    padding: 20px;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    position: relative;
+                }
+                .voice-option:hover {
+                    border-color: #4285f4;
+                    transform: scale(1.02);
+                }
+                .voice-option.selected {
+                    border-color: #4285f4;
+                    background: #e6f3ff;
+                }
+                .voice-name {
+                    font-size: 22px;
+                    font-weight: bold;
+                    color: #333;
+                    margin-bottom: 8px;
+                }
+                .voice-desc {
+                    font-size: 16px;
+                    color: #666;
+                    margin-bottom: 15px;
+                }
+                .test-voice-btn {
+                    background: #00aa00;
+                    color: white;
+                    border: none;
+                    padding: 8px 15px;
+                    border-radius: 8px;
+                    font-size: 14px;
+                    cursor: pointer;
+                    position: absolute;
+                    top: 15px;
+                    right: 15px;
+                }
+                .test-voice-btn:hover {
+                    background: #008800;
+                }
+            `;
+            document.head.appendChild(style);
+            
+            return modal;
+        }
+
+        function selectVoice(voiceKey) {
+            currentVoice = voiceKey;
+            document.querySelectorAll('.voice-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            event.target.closest('.voice-option').classList.add('selected');
+            
+            showVoiceStatus(`✅ Selected: ${PREMIUM_VOICES[voiceKey].voice.name}`);
+            setTimeout(hideVoiceStatus, 2000);
+        }
+
+        function testVoice(voiceKey, event) {
+            event.stopPropagation();
+            const oldVoice = currentVoice;
+            currentVoice = voiceKey;
+            speakText("Hello! This is a test of the premium voice quality. How does this sound?");
+            currentVoice = oldVoice;
+        }
+
+        function closeVoiceSelector() {
+            const modal = document.getElementById('voice-selector-modal');
+            if (modal) {
+                modal.remove();
             }
         }
     </script>
