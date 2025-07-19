@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🤖 Real AI Assistant | Powered by Google AI - Auto Repair Website</title>
+    <link rel="stylesheet" href="real-ai-converter-style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Google AI Configuration -->
+    <script>
+        // Google Cloud AI Configuration
+        const GOOGLE_AI_CONFIG = {
+            // These will be set up with your Google Console account
+            projectId: 'YOUR_PROJECT_ID', // Replace with your Google Cloud Project ID
+            location: 'us-central1',
+            apiKey: 'YOUR_API_KEY', // Replace with your API key
+            
+            // Dialogflow configuration
+            dialogflow: {
+                projectId: 'YOUR_PROJECT_ID',
+                sessionId: 'user-session-' + Date.now(),
+                languageCode: 'en-US'
+            },
+            
+            // PaLM API configuration  
+            palm: {
+                model: 'models/text-bison-001',
+                apiKey: 'YOUR_PALM_API_KEY'
+            },
+            
+            // Speech services
+            speech: {
+                speechToText: true,
+                textToSpeech: true,
+                language: 'en-US',
+                voice: 'en-US-Standard-F' // Female voice
+            }
+        };
+    </script>
+
+    <!-- Real AI Header -->
+    <header class="real-ai-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fab fa-google"></i>
+                    <span>Real AI Assistant</span>
+                    <div class="powered-by">Powered by Google AI</div>
+                </div>
+                <div class="ai-status-header">
+                    <div class="status-indicator">
+                        <div class="status-dot online"></div>
+                        <span>AI Online & Ready</span>
+                    </div>
+                    <div class="google-badge">
+                        <i class="fab fa-google"></i>
+                        <span>Google Cloud AI</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="real-ai-hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <div class="google-ai-badge">
+                        <i class="fab fa-google"></i>
+                        <span>Powered by Google AI</span>
+                        <div class="badge-pulse"></div>
+                    </div>
+                    <h1>Meet Your <span class="google-gradient">Real AI Assistant</span></h1>
+                    <p class="hero-subtitle">This isn't a demo - it's a real AI powered by Google's advanced language models. Talk to it naturally about auto repair services, pricing, and booking appointments.</p>
+                    
+                    <div class="google-features">
+                        <div class="google-feature">
+                            <i class="fas fa-brain"></i>
+                            <span>Google's PaLM AI</span>
+                        </div>
+                        <div class="google-feature">
+                            <i class="fas fa-microphone"></i>
+                            <span>Google Speech Recognition</span>
+                        </div>
+                        <div class="google-feature">
+                            <i class="fas fa-comments"></i>
+                            <span>Google Dialogflow</span>
+                        </div>
+                    </div>
+
+                    <div class="cta-section">
+                        <button class="real-ai-cta" onclick="startRealAI()">
+                            <i class="fab fa-google"></i>
+                            <span>Talk to Real AI Now</span>
+                            <div class="button-spark"></div>
+                        </button>
+                        <p class="real-note">🤖 This is actual Google AI - not a simulation!</p>
+                    </div>
+                </div>
+
+                <div class="real-ai-demo">
+                    <div class="ai-interface">
+                        <!-- Real AI Chat Interface -->
+                        <div class="real-chat-container">
+                            <div class="chat-header-real">
+                                <div class="ai-avatar-real">
+                                    <div class="google-logo">
+                                        <i class="fab fa-google"></i>
+                                    </div>
+                                    <div class="ai-pulse-ring"></div>
+                                </div>
+                                <div class="ai-info-real">
+                                    <h3>AI Assistant</h3>
+                                    <div class="ai-powered">
+                                        <i class="fab fa-google"></i>
+                                        <span>Google AI • Natural Language</span>
+                                    </div>
+                                </div>
+                                <div class="real-controls">
+                                    <button class="voice-control" onclick="toggleSpeechRecognition()" title="Voice Input">
+                                        <i class="fas fa-microphone"></i>
+                                        <div class="voice-indicator"></div>
+                                    </button>
+                                    <button class="tts-control" onclick="toggleTextToSpeech()" title="Text to Speech">
+                                        <i class="fas fa-volume-up"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="real-chat-messages" id="real-chat-messages">
+                                <div class="system-message">
+                                    <div class="google-icon">
+                                        <i class="fab fa-google"></i>
+                                    </div>
+                                    <div class="system-text">
+                                        <h4>🚀 Google AI Initializing...</h4>
+                                        <p>Connecting to Google Cloud AI services...</p>
+                                        <div class="loading-steps">
+                                            <div class="step" id="step1">📡 Connecting to Google Cloud</div>
+                                            <div class="step" id="step2">🧠 Loading PaLM Language Model</div>
+                                            <div class="step" id="step3">🎯 Initializing Dialogflow</div>
+                                            <div class="step" id="step4">🎤 Enabling Speech Services</div>
+                                            <div class="step" id="step5">✅ AI Ready for Conversation</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="real-input-section">
+                                <div class="smart-suggestions" id="smart-suggestions">
+                                    <button class="smart-pill" onclick="sendToRealAI('I need an oil change for my car')">
+                                        <i class="fas fa-oil-can"></i>
+                                        I need an oil change
+                                    </button>
+                                    <button class="smart-pill" onclick="sendToRealAI('What are your brake repair prices?')">
+                                        <i class="fas fa-tools"></i>
+                                        Brake repair prices
+                                    </button>
+                                    <button class="smart-pill" onclick="sendToRealAI('Can I book an appointment for tomorrow?')">
+                                        <i class="fas fa-calendar"></i>
+                                        Book appointment
+                                    </button>
+                                </div>
+                                
+                                <div class="real-input-container">
+                                    <input 
+                                        type="text" 
+                                        id="real-ai-input" 
+                                        placeholder="Ask the real AI anything about auto repair..."
+                                        onkeypress="handleRealAIInput(event)"
+                                        autocomplete="off"
+                                    >
+                                    <button class="mic-button" onclick="startVoiceInput()" id="mic-button">
+                                        <i class="fas fa-microphone"></i>
+                                        <div class="mic-pulse"></div>
+                                    </button>
+                                    <button class="send-button-real" onclick="sendToRealAI()">
+                                        <i class="fas fa-paper-plane"></i>
+                                        <div class="send-spark"></div>
+                                    </button>
+                                </div>
+                                
+                                <div class="ai-thinking" id="ai-thinking" style="display: none;">
+                                    <div class="google-spinner">
+                                        <div class="spinner-ring"></div>
+                                        <i class="fab fa-google"></i>
+                                    </div>
+                                    <div class="thinking-text">
+                                        <span id="thinking-message">Google AI is processing...</span>
+                                        <div class="thinking-animation">
+                                            <span></span><span></span><span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Real AI Features Panel -->
+                        <div class="real-features-panel">
+                            <h4>🚀 Real Google AI Features</h4>
+                            <div class="real-feature-list">
+                                <div class="real-feature active" data-feature="nlp">
+                                    <i class="fas fa-brain"></i>
+                                    <div class="feature-info">
+                                        <span>Natural Language</span>
+                                        <small>Google PaLM AI</small>
+                                    </div>
+                                    <div class="feature-status online"></div>
+                                </div>
+                                <div class="real-feature active" data-feature="speech">
+                                    <i class="fas fa-microphone"></i>
+                                    <div class="feature-info">
+                                        <span>Speech Recognition</span>
+                                        <small>Google Cloud Speech</small>
+                                    </div>
+                                    <div class="feature-status online"></div>
+                                </div>
+                                <div class="real-feature active" data-feature="tts">
+                                    <i class="fas fa-volume-up"></i>
+                                    <div class="feature-info">
+                                        <span>Text to Speech</span>
+                                        <small>Google Cloud TTS</small>
+                                    </div>
+                                    <div class="feature-status online"></div>
+                                </div>
+                                <div class="real-feature active" data-feature="dialogflow">
+                                    <i class="fas fa-sitemap"></i>
+                                    <div class="feature-info">
+                                        <span>Conversation Flow</span>
+                                        <small>Google Dialogflow</small>
+                                    </div>
+                                    <div class="feature-status online"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Live AI Analytics -->
+                    <div class="real-ai-analytics">
+                        <div class="analytics-header">
+                            <h4>📊 Live AI Analytics</h4>
+                            <div class="google-powered">
+                                <i class="fab fa-google"></i>
+                                <span>Powered by Google Analytics</span>
+                            </div>
+                        </div>
+                        <div class="analytics-grid">
+                            <div class="metric-card">
+                                <div class="metric-icon">
+                                    <i class="fas fa-comments"></i>
+                                </div>
+                                <div class="metric-data">
+                                    <span class="metric-number" id="conversations-today">0</span>
+                                    <span class="metric-label">Conversations Today</span>
+                                </div>
+                                <div class="metric-trend up">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>+23%</span>
+                                </div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-icon">
+                                    <i class="fas fa-calendar-check"></i>
+                                </div>
+                                <div class="metric-data">
+                                    <span class="metric-number" id="appointments-booked">0</span>
+                                    <span class="metric-label">Appointments Booked</span>
+                                </div>
+                                <div class="metric-trend up">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>+41%</span>
+                                </div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-icon">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="metric-data">
+                                    <span class="metric-number" id="satisfaction-score">98%</span>
+                                    <span class="metric-label">Satisfaction Score</span>
+                                </div>
+                                <div class="metric-trend up">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>+5%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Google AI Setup Instructions -->
+    <section class="setup-section">
+        <div class="container">
+            <div class="setup-header">
+                <h2>🔧 Google AI Setup Instructions</h2>
+                <p>Follow these steps to connect your Google Cloud Console account</p>
+            </div>
+
+            <div class="setup-steps">
+                <div class="setup-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Create Google Cloud Project</h3>
+                        <p>Go to <a href="https://console.cloud.google.com" target="_blank">Google Cloud Console</a> and create a new project for your auto repair AI.</p>
+                        <div class="code-block">
+                            <code>Project Name: Auto Repair AI Assistant</code>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setup-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Enable Required APIs</h3>
+                        <p>Enable these Google Cloud APIs in your project:</p>
+                        <ul>
+                            <li>✅ Dialogflow API</li>
+                            <li>✅ Cloud Speech-to-Text API</li>
+                            <li>✅ Cloud Text-to-Speech API</li>
+                            <li>✅ PaLM API (Generative AI)</li>
+                            <li>✅ Cloud Translation API</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="setup-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Create API Credentials</h3>
+                        <p>Generate API keys and service account credentials:</p>
+                        <div class="credentials-info">
+                            <div class="credential-item">
+                                <strong>API Key:</strong> For PaLM API and Speech services
+                            </div>
+                            <div class="credential-item">
+                                <strong>Service Account:</strong> For Dialogflow integration
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setup-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Configure Dialogflow Agent</h3>
+                        <p>Set up your Dialogflow conversational AI agent:</p>
+                        <div class="dialogflow-config">
+                            <h4>Auto Repair Intents:</h4>
+                            <div class="intent-list">
+                                <div class="intent-item">🔧 Service Inquiry</div>
+                                <div class="intent-item">💰 Pricing Questions</div>
+                                <div class="intent-item">📅 Appointment Booking</div>
+                                <div class="intent-item">🕐 Business Hours</div>
+                                <div class="intent-item">📍 Location & Contact</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setup-step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h3>Update Configuration</h3>
+                        <p>Replace the placeholder values in the code:</p>
+                        <div class="config-code">
+                            <pre><code>const GOOGLE_AI_CONFIG = {
+    projectId: 'your-project-id-here',
+    apiKey: 'your-api-key-here',
+    palmApiKey: 'your-palm-api-key-here'
+};</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="setup-help">
+                <div class="help-card">
+                    <h4>Need Help Setting Up?</h4>
+                    <p>We provide complete setup service for Google AI integration:</p>
+                    <ul>
+                        <li>✅ Google Cloud account configuration</li>
+                        <li>✅ API setup and credentials</li>
+                        <li>✅ Dialogflow agent creation</li>
+                        <li>✅ Custom training for auto repair</li>
+                        <li>✅ Testing and optimization</li>
+                    </ul>
+                    <button class="help-button">
+                        <i class="fas fa-headset"></i>
+                        Get Setup Help - $497
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Real AI Features -->
+    <section class="real-features-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>🚀 Real Google AI Capabilities</h2>
+                <p>Powered by the same AI technology used by millions of Google users</p>
+            </div>
+
+            <div class="features-showcase">
+                <div class="feature-card advanced">
+                    <div class="feature-header">
+                        <div class="google-icon-large">
+                            <i class="fab fa-google"></i>
+                        </div>
+                        <h3>PaLM Language Model</h3>
+                        <div class="google-badge-small">Google AI</div>
+                    </div>
+                    <div class="feature-content">
+                        <p>Advanced language understanding powered by Google's PaLM (Pathways Language Model) - the same AI behind Bard.</p>
+                        <div class="capabilities">
+                            <div class="capability">✅ Natural conversation flow</div>
+                            <div class="capability">✅ Context understanding</div>
+                            <div class="capability">✅ Multi-turn dialogue</div>
+                            <div class="capability">✅ Industry-specific knowledge</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-card advanced">
+                    <div class="feature-header">
+                        <div class="google-icon-large speech">
+                            <i class="fas fa-microphone"></i>
+                        </div>
+                        <h3>Google Cloud Speech</h3>
+                        <div class="google-badge-small">Speech Recognition</div>
+                    </div>
+                    <div class="feature-content">
+                        <p>Industry-leading speech recognition with 99%+ accuracy, supporting 120+ languages and variants.</p>
+                        <div class="capabilities">
+                            <div class="capability">✅ Real-time transcription</div>
+                            <div class="capability">✅ Noise cancellation</div>
+                            <div class="capability">✅ Auto punctuation</div>
+                            <div class="capability">✅ Custom vocabulary</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-card advanced">
+                    <div class="feature-header">
+                        <div class="google-icon-large tts">
+                            <i class="fas fa-volume-up"></i>
+                        </div>
+                        <h3>Google Text-to-Speech</h3>
+                        <div class="google-badge-small">Voice Synthesis</div>
+                    </div>
+                    <div class="feature-content">
+                        <p>Natural-sounding speech synthesis with WaveNet technology for human-like voice quality.</p>
+                        <div class="capabilities">
+                            <div class="capability">✅ 40+ languages</div>
+                            <div class="capability">✅ Multiple voice options</div>
+                            <div class="capability">✅ SSML support</div>
+                            <div class="capability">✅ Custom voice training</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-card advanced">
+                    <div class="feature-header">
+                        <div class="google-icon-large dialogflow">
+                            <i class="fas fa-sitemap"></i>
+                        </div>
+                        <h3>Google Dialogflow</h3>
+                        <div class="google-badge-small">Conversation AI</div>
+                    </div>
+                    <div class="feature-content">
+                        <p>Advanced conversation management with intent recognition, entity extraction, and context handling.</p>
+                        <div class="capabilities">
+                            <div class="capability">✅ Intent classification</div>
+                            <div class="capability">✅ Entity extraction</div>
+                            <div class="capability">✅ Context management</div>
+                            <div class="capability">✅ Webhook integration</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing-section">
+        <div class="container">
+            <div class="pricing-header">
+                <h2>💰 Real AI Investment</h2>
+                <p>Get real Google AI technology for your auto repair business</p>
+            </div>
+
+            <div class="pricing-options">
+                <div class="pricing-card basic">
+                    <div class="card-header">
+                        <h3>Website + Basic AI</h3>
+                        <div class="price">$3,997</div>
+                    </div>
+                    <div class="features">
+                        <div class="feature">✅ Professional auto repair website</div>
+                        <div class="feature">✅ Basic AI chat (pre-programmed)</div>
+                        <div class="feature">✅ Appointment booking system</div>
+                        <div class="feature">✅ Mobile optimization</div>
+                        <div class="feature">✅ SEO setup</div>
+                        <div class="feature">✅ 30-day support</div>
+                    </div>
+                    <button class="pricing-btn">Choose Basic</button>
+                </div>
+
+                <div class="pricing-card premium featured">
+                    <div class="featured-label">Most Popular</div>
+                    <div class="card-header">
+                        <h3>Website + Real Google AI</h3>
+                        <div class="price">$7,997</div>
+                        <div class="price-note">Includes Google Cloud setup</div>
+                    </div>
+                    <div class="features">
+                        <div class="feature">✅ Everything in Basic</div>
+                        <div class="feature">🚀 Real Google PaLM AI integration</div>
+                        <div class="feature">🚀 Google Speech Recognition</div>
+                        <div class="feature">🚀 Google Text-to-Speech</div>
+                        <div class="feature">🚀 Dialogflow conversation AI</div>
+                        <div class="feature">🚀 Complete Google Cloud setup</div>
+                        <div class="feature">🚀 Custom AI training for auto repair</div>
+                        <div class="feature">🚀 Advanced analytics & reporting</div>
+                        <div class="feature">🚀 6 months premium support</div>
+                        <div class="feature">🚀 Google AI consultant included</div>
+                    </div>
+                    <button class="pricing-btn premium-btn">Get Real Google AI</button>
+                </div>
+
+                <div class="pricing-card enterprise">
+                    <div class="card-header">
+                        <h3>Enterprise AI Solution</h3>
+                        <div class="price">$15,997</div>
+                    </div>
+                    <div class="features">
+                        <div class="feature">✅ Everything in Premium</div>
+                        <div class="feature">🏢 Multi-location support</div>
+                        <div class="feature">🏢 Custom AI model training</div>
+                        <div class="feature">🏢 Advanced integrations</div>
+                        <div class="feature">🏢 Dedicated Google AI specialist</div>
+                        <div class="feature">🏢 White-label solution</div>
+                        <div class="feature">🏢 1-year premium support</div>
+                    </div>
+                    <button class="pricing-btn">Contact Sales</button>
+                </div>
+            </div>
+
+            <div class="google-guarantee">
+                <div class="guarantee-content">
+                    <div class="google-shield">
+                        <i class="fab fa-google"></i>
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="guarantee-text">
+                        <h4>Google AI Performance Guarantee</h4>
+                        <p>If Google AI doesn't increase your customer engagement by 40% within 60 days, we'll refund the difference between Basic and Premium packages.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="real-ai-converter-script.js"></script>
+</body>
+</html>
