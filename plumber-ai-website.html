@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔧 Revolutionary AI Assistant for Plumbers | Transform Your Business Today</title>
+    <link rel="stylesheet" href="plumber-ai-style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Hero Section with AI Demo -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <div class="hero-badge">
+                        <i class="fas fa-robot"></i>
+                        Revolutionary AI Technology
+                    </div>
+                    <h1>The AI Assistant That Will <span class="highlight">3X Your Plumbing Business</span> in 90 Days</h1>
+                    <p class="hero-subtitle">Watch your AI assistant handle customer calls, book appointments, provide quotes, and convert leads 24/7 - while you focus on the work you love!</p>
+                    
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <span class="stat-number">300%</span>
+                            <span class="stat-label">More Leads</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">24/7</span>
+                            <span class="stat-label">Availability</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">85%</span>
+                            <span class="stat-label">Cost Savings</span>
+                        </div>
+                    </div>
+                    
+                    <div class="hero-buttons">
+                        <button class="btn-primary" onclick="openAIDemo()">
+                            <i class="fas fa-play"></i>
+                            See AI in Action
+                        </button>
+                        <button class="btn-secondary" onclick="scrollToPlans()">
+                            <i class="fas fa-dollar-sign"></i>
+                            View Pricing
+                        </button>
+                    </div>
+                    
+                    <div class="trust-indicators">
+                        <span>✅ No Setup Fees</span>
+                        <span>✅ 30-Day Money Back</span>
+                        <span>✅ Cancel Anytime</span>
+                    </div>
+                </div>
+                
+                <div class="hero-demo">
+                    <div class="ai-assistant-preview">
+                        <div class="assistant-header">
+                            <div class="assistant-avatar">
+                                <div class="avatar-glow"></div>
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="assistant-info">
+                                <h3>PlumberBot AI</h3>
+                                <span class="status">Online & Ready</span>
+                            </div>
+                            <div class="live-indicator">
+                                <span class="pulse-dot"></span>
+                                LIVE
+                            </div>
+                        </div>
+                        
+                        <div class="conversation-preview">
+                            <div class="message customer-msg">
+                                <div class="msg-content">
+                                    <i class="fas fa-user"></i>
+                                    "I have a burst pipe emergency!"
+                                </div>
+                            </div>
+                            <div class="message ai-msg typing">
+                                <div class="msg-content">
+                                    <i class="fas fa-robot"></i>
+                                    <div class="typing-indicator">
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                    </div>
+                                    <div class="ai-response">
+                                        "I understand this is urgent! I can schedule an emergency visit within 30 minutes. Our emergency rate is $150 plus parts. What's your address?"
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="message customer-msg">
+                                <div class="msg-content">
+                                    <i class="fas fa-user"></i>
+                                    "123 Oak Street"
+                                </div>
+                            </div>
+                            <div class="message ai-msg">
+                                <div class="msg-content">
+                                    <i class="fas fa-robot"></i>
+                                    "Perfect! I've booked emergency service for 123 Oak Street. Technician Mike will arrive in 25 minutes. I'll send you a confirmation text with tracking."
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="demo-actions">
+                            <button class="demo-btn" onclick="openAIDemo()">
+                                <i class="fas fa-comments"></i>
+                                Try Full Demo
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Features Showcase -->
+    <section class="features-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Your AI Assistant Can Do <span class="highlight">Everything</span> Your Best Employee Can... And More!</h2>
+                <p>See how PlumberBot AI handles every aspect of customer service with superhuman efficiency</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card smart">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Smart Call Handling</h3>
+                    <p>Answers every call instantly, understands plumbing problems, and provides accurate solutions 24/7</p>
+                    <div class="feature-demo">
+                        <button class="demo-trigger" onclick="showFeatureDemo('calls')">
+                            <i class="fas fa-play"></i>
+                            Watch Demo
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="feature-card instant">
+                    <div class="feature-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h3>Instant Appointment Booking</h3>
+                    <p>Books appointments in real-time, checks your calendar, and sends confirmations automatically</p>
+                    <div class="feature-demo">
+                        <button class="demo-trigger" onclick="showFeatureDemo('booking')">
+                            <i class="fas fa-play"></i>
+                            Watch Demo
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="feature-card pricing">
+                    <div class="feature-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <h3>Accurate Quote Generation</h3>
+                    <p>Provides instant, accurate quotes based on your pricing structure and job complexity</p>
+                    <div class="feature-demo">
+                        <button class="demo-trigger" onclick="showFeatureDemo('quotes')">
+                            <i class="fas fa-play"></i>
+                            Watch Demo
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="feature-card emergency">
+                    <div class="feature-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h3>Emergency Response</h3>
+                    <p>Identifies emergencies, prioritizes urgent calls, and dispatches help immediately</p>
+                    <div class="feature-demo">
+                        <button class="demo-trigger" onclick="showFeatureDemo('emergency')">
+                            <i class="fas fa-play"></i>
+                            Watch Demo
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="feature-card follow">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <h3>Customer Follow-Up</h3>
+                    <p>Automatically follows up with customers, requests reviews, and schedules maintenance</p>
+                    <div class="feature-demo">
+                        <button class="demo-trigger" onclick="showFeatureDemo('followup')">
+                            <i class="fas fa-play"></i>
+                            Watch Demo
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="feature-card analytics">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Business Analytics</h3>
+                    <p>Tracks performance, identifies trends, and provides insights to grow your business</p>
+                    <div class="feature-demo">
+                        <button class="demo-trigger" onclick="showFeatureDemo('analytics')">
+                            <i class="fas fa-play"></i>
+                            Watch Demo
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Stories -->
+    <section class="testimonials-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Real Plumbers, <span class="highlight">Real Results</span></h2>
+                <p>See how PlumberBot AI transformed these plumbing businesses</p>
+            </div>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card featured">
+                    <div class="testimonial-header">
+                        <div class="customer-avatar">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face" alt="Mike Johnson">
+                        </div>
+                        <div class="customer-info">
+                            <h4>Mike Johnson</h4>
+                            <span>Johnson Plumbing, Texas</span>
+                        </div>
+                        <div class="rating">
+                            ⭐⭐⭐⭐⭐
+                        </div>
+                    </div>
+                    <div class="testimonial-content">
+                        <p>"I was skeptical at first, but PlumberBot AI has been a game-changer. In just 2 months, I went from answering calls all day to focusing on actual plumbing work. My revenue increased by $47,000 and I got my evenings back!"</p>
+                        <div class="results">
+                            <div class="result">
+                                <span class="result-number">+$47K</span>
+                                <span class="result-label">Revenue Increase</span>
+                            </div>
+                            <div class="result">
+                                <span class="result-number">280%</span>
+                                <span class="result-label">More Bookings</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="customer-avatar">
+                            <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=80&h=80&fit=crop&crop=face" alt="Sarah Davis">
+                        </div>
+                        <div class="customer-info">
+                            <h4>Sarah Davis</h4>
+                            <span>Davis Drain Solutions, CA</span>
+                        </div>
+                        <div class="rating">
+                            ⭐⭐⭐⭐⭐
+                        </div>
+                    </div>
+                    <div class="testimonial-content">
+                        <p>"The AI handles emergency calls better than my old answering service. Customers love the instant response and accurate quotes. I've reduced my overhead by 60% while doubling my customer base!"</p>
+                        <div class="results">
+                            <div class="result">
+                                <span class="result-number">200%</span>
+                                <span class="result-label">Customer Growth</span>
+                            </div>
+                            <div class="result">
+                                <span class="result-number">60%</span>
+                                <span class="result-label">Cost Reduction</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="customer-avatar">
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face" alt="Robert Chen">
+                        </div>
+                        <div class="customer-info">
+                            <h4>Robert Chen</h4>
+                            <span>Elite Plumbing Services, NY</span>
+                        </div>
+                        <div class="rating">
+                            ⭐⭐⭐⭐⭐
+                        </div>
+                    </div>
+                    <div class="testimonial-content">
+                        <p>"I was losing customers to competitors who answered calls faster. Now PlumberBot AI answers every call in 2 seconds, books appointments instantly, and my conversion rate went from 40% to 85%!"</p>
+                        <div class="results">
+                            <div class="result">
+                                <span class="result-number">85%</span>
+                                <span class="result-label">Conversion Rate</span>
+                            </div>
+                            <div class="result">
+                                <span class="result-number">2 sec</span>
+                                <span class="result-label">Response Time</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive AI Demo -->
+    <section class="demo-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Experience the <span class="highlight">Magic</span> Yourself</h2>
+                <p>Talk to PlumberBot AI right now - see how it handles real plumbing scenarios</p>
+            </div>
+            
+            <div class="demo-interface">
+                <div class="demo-chat">
+                    <div class="chat-header">
+                        <div class="ai-avatar-large">
+                            <div class="avatar-glow-large"></div>
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="ai-info">
+                            <h3>PlumberBot AI Assistant</h3>
+                            <div class="ai-status">
+                                <span class="status-dot online"></span>
+                                Ready to help customers
+                            </div>
+                        </div>
+                        <div class="demo-controls">
+                            <button class="voice-btn" id="voice-demo-btn">
+                                <i class="fas fa-microphone"></i>
+                            </button>
+                            <button class="speaker-btn enabled" id="speaker-demo-btn">
+                                <i class="fas fa-volume-up"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-messages" id="demo-chat-messages">
+                        <div class="demo-message ai-message">
+                            <div class="message-avatar">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="message-content">
+                                <div class="message-text">
+                                    Hi! I'm PlumberBot AI, your 24/7 plumbing assistant. I can help you with emergencies, scheduling, quotes, and any plumbing questions. What can I help you with today?
+                                </div>
+                                <div class="message-time">Just now</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="demo-suggestions">
+                        <div class="suggestion-pill" onclick="sendDemoMessage('I have a clogged drain')">
+                            <i class="fas fa-sink"></i>
+                            Clogged drain
+                        </div>
+                        <div class="suggestion-pill" onclick="sendDemoMessage('Emergency leak!')">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Emergency leak
+                        </div>
+                        <div class="suggestion-pill" onclick="sendDemoMessage('Schedule maintenance')">
+                            <i class="fas fa-calendar"></i>
+                            Schedule service
+                        </div>
+                        <div class="suggestion-pill" onclick="sendDemoMessage('Get a quote')">
+                            <i class="fas fa-dollar-sign"></i>
+                            Get quote
+                        </div>
+                    </div>
+                    
+                    <div class="demo-input">
+                        <input type="text" id="demo-input-field" placeholder="Type your message or click suggestions above...">
+                        <button class="send-demo-btn" onclick="sendDemoMessage()">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="demo-features">
+                    <h4>🔥 What Makes This AI Special?</h4>
+                    <div class="ai-capabilities">
+                        <div class="capability">
+                            <i class="fas fa-lightning-bolt"></i>
+                            <span>Instant responses - Never misses a call</span>
+                        </div>
+                        <div class="capability">
+                            <i class="fas fa-brain"></i>
+                            <span>Understands complex plumbing problems</span>
+                        </div>
+                        <div class="capability">
+                            <i class="fas fa-calendar-check"></i>
+                            <span>Books appointments in real-time</span>
+                        </div>
+                        <div class="capability">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span>Provides accurate pricing instantly</span>
+                        </div>
+                        <div class="capability">
+                            <i class="fas fa-phone"></i>
+                            <span>Handles voice calls naturally</span>
+                        </div>
+                        <div class="capability">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Tracks and optimizes performance</span>
+                        </div>
+                    </div>
+                    
+                    <div class="demo-cta">
+                        <p><strong>This AI is talking to YOUR customers right now!</strong></p>
+                        <button class="btn-demo-cta" onclick="scrollToPlans()">
+                            <i class="fas fa-rocket"></i>
+                            Get My AI Assistant
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Plans -->
+    <section class="pricing-section" id="pricing-plans">
+        <div class="container">
+            <div class="section-header">
+                <h2>Choose Your <span class="highlight">Success Plan</span></h2>
+                <p>Start transforming your plumbing business today with our AI assistant</p>
+            </div>
+            
+            <div class="pricing-toggle">
+                <span class="toggle-label">Monthly</span>
+                <div class="toggle-switch">
+                    <input type="checkbox" id="pricing-toggle" onchange="togglePricing()">
+                    <label for="pricing-toggle"></label>
+                </div>
+                <span class="toggle-label">Yearly <span class="save-badge">Save 40%</span></span>
+            </div>
+            
+            <div class="pricing-grid">
+                <div class="pricing-card starter">
+                    <div class="plan-header">
+                        <h3>Starter</h3>
+                        <div class="plan-price">
+                            <span class="currency">$</span>
+                            <span class="amount monthly-price">97</span>
+                            <span class="amount yearly-price hidden">58</span>
+                            <span class="period">/month</span>
+                        </div>
+                        <p class="plan-description">Perfect for solo plumbers getting started</p>
+                    </div>
+                    
+                    <div class="plan-features">
+                        <div class="feature">
+                            <i class="fas fa-check"></i>
+                            AI Call Handling (up to 100 calls/month)
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check"></i>
+                            Appointment Booking System
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check"></i>
+                            Basic Quote Generation
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check"></i>
+                            Customer Follow-up
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check"></i>
+                            Email Support
+                        </div>
+                    </div>
+                    
+                    <button class="plan-btn" onclick="selectPlan('starter')">
+                        Start Free Trial
+                    </button>
+                </div>
+                
+                <div class="pricing-card professional featured">
+                    <div class="popular-badge">Most Popular</div>
+                    <div class="plan-header">
+                        <h3>Professional</h3>
+                        <div class="plan-price">
+                            <span class="currency">$</span>
+                            <span class="amount monthly-price">197</span>
+                            <span class="amount yearly-price hidden">118</span>
+                            <span class="period">/month</span>
+                        </div>
+                        <p class="plan-description">For growing plumbing businesses</p>
+                    </div>
+                    
+                    <div class="plan-features">
+                        <div class="feature">
+                            <i class="fas fa-check"></i>
+                            AI Call Handling (up to 500 calls/month)
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check"></i>
+                            Advanced Scheduling System
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check"></i>
+                            Smart Quote Generation
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check"></i>
+                            Emergency Call Prioritization
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check"></i>
+                            Customer Database
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check"></i>
+                            Performance Analytics
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check"></i>
+                            Phone & Chat Support
+                        </div>
+                    </div>
+                    
+                    <button class="plan-btn featured-btn" onclick="selectPlan('professional')">
+                        Start Free Trial
+                    </button>
+                </div>
+                
+                <div class="pricing-card enterprise">
+                    <div class="plan-header">
+                        <h3>Enterprise</h3>
+                        <div class="plan-price">
+                            <span class="currency">$</span>
+                            <span class="amount monthly-price">397</span>
+                            <span class="amount yearly-price hidden">238</span>
+                            <span class="period">/month</span>
+                        </div>
+                        <p class="plan-description">For large plumbing companies</p>
+                    </div>
+                    
+                    <div class="plan-features">
+                        <div class="feature">
+                            <i class="fas fa-check"></i>
+                            Unlimited AI Call Handling
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check"></i>
+                            Multi-location Support
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check"></i>
+                            Custom AI Training
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check"></i>
+                            Advanced Analytics Dashboard
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check"></i>
+                            Team Management
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check"></i>
+                            API Integration
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check"></i>
+                            Priority Support
+                        </div>
+                    </div>
+                    
+                    <button class="plan-btn" onclick="selectPlan('enterprise')">
+                        Start Free Trial
+                    </button>
+                </div>
+            </div>
+            
+            <div class="guarantee-section">
+                <div class="guarantee-card">
+                    <div class="guarantee-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="guarantee-content">
+                        <h4>30-Day Money-Back Guarantee</h4>
+                        <p>Try PlumberBot AI risk-free for 30 days. If you're not completely satisfied with the results, we'll refund every penny. No questions asked.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ROI Calculator -->
+    <section class="roi-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Calculate Your <span class="highlight">Return on Investment</span></h2>
+                <p>See exactly how much money PlumberBot AI will make you</p>
+            </div>
+            
+            <div class="roi-calculator">
+                <div class="calculator-inputs">
+                    <h4>Your Current Business</h4>
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Average job value:</label>
+                            <div class="input-field">
+                                <span class="currency">$</span>
+                                <input type="number" id="avg-job-value" value="275" min="50" max="1000" onchange="calculateROI()">
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>Jobs per month:</label>
+                            <input type="number" id="jobs-per-month" value="25" min="5" max="200" onchange="calculateROI()">
+                        </div>
+                    </div>
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Missed calls per week:</label>
+                            <input type="number" id="missed-calls" value="15" min="0" max="100" onchange="calculateROI()">
+                        </div>
+                        <div class="input-group">
+                            <label>Current conversion rate:</label>
+                            <div class="input-field">
+                                <input type="number" id="conversion-rate" value="45" min="10" max="90" onchange="calculateROI()">
+                                <span class="percent">%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="calculator-results">
+                    <h4>With PlumberBot AI</h4>
+                    <div class="results-grid">
+                        <div class="result-item">
+                            <div class="result-label">Additional Monthly Revenue</div>
+                            <div class="result-value" id="additional-revenue">$8,250</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Annual Revenue Increase</div>
+                            <div class="result-value" id="annual-increase">$99,000</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">ROI After Year 1</div>
+                            <div class="result-value" id="roi-percentage">4,125%</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Payback Period</div>
+                            <div class="result-value" id="payback-period">8 days</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to <span class="highlight">Transform</span> Your Plumbing Business?</h2>
+                <p>Join hundreds of successful plumbers who are already using AI to grow their businesses</p>
+                
+                <div class="cta-benefits">
+                    <div class="benefit">
+                        <i class="fas fa-rocket"></i>
+                        <span>Set up in under 10 minutes</span>
+                    </div>
+                    <div class="benefit">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>30-day money-back guarantee</span>
+                    </div>
+                    <div class="benefit">
+                        <i class="fas fa-headset"></i>
+                        <span>24/7 customer support</span>
+                    </div>
+                </div>
+                
+                <div class="cta-buttons">
+                    <button class="btn-primary-large" onclick="selectPlan('professional')">
+                        <i class="fas fa-play"></i>
+                        Start Free Trial Now
+                    </button>
+                    <button class="btn-secondary-large" onclick="openAIDemo()">
+                        <i class="fas fa-comments"></i>
+                        Try AI Demo First
+                    </button>
+                </div>
+                
+                <div class="cta-note">
+                    <p><strong>Limited Time:</strong> Get your first month FREE when you sign up today!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Demo Modal -->
+    <div id="ai-demo-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Live AI Assistant Demo</h3>
+                <button class="modal-close" onclick="closeAIDemo()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="full-ai-interface">
+                    <div class="ai-chat-full">
+                        <div class="chat-header-full">
+                            <div class="ai-avatar-full">
+                                <div class="avatar-glow-full"></div>
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="ai-info-full">
+                                <h4>PlumberBot AI</h4>
+                                <span class="ai-status-full">
+                                    <span class="status-dot online"></span>
+                                    Ready to assist customers
+                                </span>
+                            </div>
+                            <div class="ai-controls-full">
+                                <button class="voice-control-full" id="voice-full-btn">
+                                    <i class="fas fa-microphone"></i>
+                                </button>
+                                <button class="speaker-control-full enabled" id="speaker-full-btn">
+                                    <i class="fas fa-volume-up"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="chat-messages-full" id="full-chat-messages">
+                            <div class="ai-message-full">
+                                <div class="message-avatar-full">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                                <div class="message-content-full">
+                                    <div class="message-text-full">
+                                        Hello! I'm PlumberBot AI, your intelligent plumbing assistant. I'm here 24/7 to help your customers with emergencies, scheduling, quotes, and any plumbing questions. Try asking me about any plumbing scenario!
+                                    </div>
+                                    <div class="message-time-full">Now</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="suggestions-full">
+                            <div class="suggestion-pill-full" onclick="sendFullMessage('I have a water heater that stopped working')">
+                                <i class="fas fa-fire"></i>
+                                Water heater issue
+                            </div>
+                            <div class="suggestion-pill-full" onclick="sendFullMessage('Emergency! My basement is flooding!')">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                Flooding emergency
+                            </div>
+                            <div class="suggestion-pill-full" onclick="sendFullMessage('I need someone to install a new toilet')">
+                                <i class="fas fa-tools"></i>
+                                Toilet installation
+                            </div>
+                            <div class="suggestion-pill-full" onclick="sendFullMessage('Can you give me a quote for bathroom renovation?')">
+                                <i class="fas fa-calculator"></i>
+                                Renovation quote
+                            </div>
+                        </div>
+                        
+                        <div class="input-full">
+                            <input type="text" id="full-input-field" placeholder="Ask me anything about plumbing services...">
+                            <button class="send-full-btn" onclick="sendFullMessage()">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="plumber-ai-script.js"></script>
+</body>
+</html>
