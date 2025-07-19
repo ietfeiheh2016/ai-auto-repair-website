@@ -473,13 +473,13 @@
         <!-- Chat Header -->
         <div class="chat-header">
             <div class="ai-avatar">
-                <i class="fab fa-google"></i>
+                <i class="fas fa-user-tie"></i>
             </div>
             <div class="ai-info">
-                <h1>Google AI Assistant</h1>
+                <h1>Alex - Auto Mechanic</h1>
                 <div class="ai-status">
                     <i class="fas fa-circle" style="color: #00ff00; font-size: 12px;"></i>
-                    Online & Ready for Auto Repair Questions
+                    Available Now - 12 Years Experience
                 </div>
             </div>
             <div class="controls">
@@ -706,23 +706,27 @@
         }
 
         function showWelcomeMessage() {
-            const welcomeText = "Hello! I'm your Google AI assistant for auto repair services. I can help you with service information and pricing, scheduling appointments, business hours and location, and warranty and repair questions. What can I help you with today?";
+            const welcomeMessages = [
+                "Hey there! I'm Alex, and this is my shop. What's going on with your car today?",
+                "Hi! Alex here - been working on cars for 12 years. What can I help you with?",
+                "Hello! I'm Alex, the owner here. What's your car doing to you today?",
+                "Hey! Alex here. Car troubles? Let's figure out what's going on."
+            ];
+            
+            const welcomeText = welcomeMessages[Math.floor(Math.random() * welcomeMessages.length)];
             
             const welcomeHTML = `
                 <div class="message">
                     <div class="message-avatar ai">
-                        <i class="fab fa-google"></i>
+                        <i class="fas fa-wrench"></i>
                     </div>
                     <div class="message-content">
                         <div class="message-bubble ai">
-                            👋 Hello! I'm your Google AI assistant for auto repair services. I can help you with:
+                            ${welcomeText}
                             <br><br>
-                            ✅ Service information and pricing<br>
-                            ✅ Scheduling appointments<br>
-                            ✅ Business hours and location<br>
-                            ✅ Warranty and repair questions<br>
-                            <br>
-                            What can I help you with today?
+                            I can help with oil changes, brakes, engine problems, AC issues, diagnostics - pretty much anything that's got wheels! 
+                            <br><br>
+                            What's your ride doing?
                         </div>
                         <div class="message-time">${new Date().toLocaleTimeString()}</div>
                     </div>
@@ -735,7 +739,7 @@
             // Speak the welcome message
             if (speechEnabled) {
                 setTimeout(() => {
-                    speakText(welcomeText);
+                    speakText(welcomeText + " I can help with pretty much any car problem. What's going on?");
                 }, 1000);
             }
         }
@@ -756,42 +760,46 @@
             addMessage('user', message);
             input.value = '';
             
-            // Show thinking
+            // Show brief thinking (like real person thinking)
             document.getElementById('thinking').style.display = 'flex';
             
             let response = '';
             let useGoogleAI = true;
             
+            // Try Google AI quickly (1 attempt only for speed)
             try {
-                // Try Google AI first (multiple attempts)
-                for (let attempt = 1; attempt <= 3; attempt++) {
-                    try {
-                        response = await callGoogleAI(message);
-                        if (response && response.trim()) {
-                            break; // Success!
-                        }
-                    } catch (error) {
-                        console.warn(`Google AI attempt ${attempt} failed:`, error);
-                        if (attempt === 3) {
-                            useGoogleAI = false;
-                        } else {
-                            // Wait a bit before retry
-                            await new Promise(resolve => setTimeout(resolve, 1000));
-                        }
-                    }
+                const aiPromise = callGoogleAI(message);
+                const timeoutPromise = new Promise((_, reject) => 
+                    setTimeout(() => reject(new Error('timeout')), 3000) // 3 second timeout
+                );
+                
+                response = await Promise.race([aiPromise, timeoutPromise]);
+                
+                if (!response || !response.trim()) {
+                    useGoogleAI = false;
                 }
             } catch (error) {
-                console.error('All Google AI attempts failed:', error);
+                console.warn('Google AI failed or timeout, using local response:', error);
                 useGoogleAI = false;
             }
             
-            // If Google AI failed, use powerful local response
+            // If Google AI failed, use instant local response
             if (!useGoogleAI || !response || !response.trim()) {
-                response = getLocalResponse(message);
+                // Small random delay to feel natural (0.5-1.5 seconds)
+                const naturalDelay = 500 + Math.random() * 1000;
+                setTimeout(() => {
+                    response = getLocalResponse(message);
+                    document.getElementById('thinking').style.display = 'none';
+                    addMessage('ai', response);
+                }, naturalDelay);
+                return;
             }
             
-            document.getElementById('thinking').style.display = 'none';
-            addMessage('ai', response);
+            // Quick response with Google AI
+            setTimeout(() => {
+                document.getElementById('thinking').style.display = 'none';
+                addMessage('ai', response);
+            }, 800 + Math.random() * 700); // 0.8-1.5 second natural delay
         }
 
         async function callGoogleAI(message) {
@@ -836,48 +844,41 @@
         }
 
         function buildAutoRepairPrompt(userMessage) {
-            return `You are Alex, an expert automotive AI assistant for a full-service auto repair shop. You are knowledgeable about ALL automotive topics and provide helpful, detailed responses to ANY question.
+            return `You are Alex - a REAL 32-year-old auto mechanic who's been working on cars for 12 years. You own this repair shop with your dad. You're passionate about cars, genuinely care about customers, and talk like a real person (not a robot).
 
-COMPLETE AUTO REPAIR SERVICES & PRICING:
-- Oil Change: $39.99 (30-45 minutes) - Complete oil and filter change with 15-point inspection
-- Brake Service: $129.99 (2-3 hours) - Brake inspection and pad replacement, lifetime warranty on pads
-- Tire Services: Rotation $24.99, Balancing $49.99, New tires from $80 each
-- Engine Diagnostic: $89.99 (1 hour) - Complete computer diagnostic scan
-- Transmission Service: $129.99 - Fluid change and inspection
-- Battery Service: Free testing, Installation from $89.99, 3-year warranty
-- AC/Heating: $99.99 recharge, $149.99 full system inspection
-- State Inspection: $19.99 (30 minutes) - Safety and emissions
-- Towing: $75-150 (partner with local services)
-- Emergency Service: Available via phone (555) 123-4567
+YOUR REAL PERSONALITY:
+- You started working on cars at 16 with your dad
+- You love classic Mustangs and work on them in your spare time  
+- You're honest, sometimes say "hmm" or "let me think about that"
+- You use casual language like "yeah", "sure thing", "no problem"
+- You remember customers and their cars if they mention details
+- You get excited talking about cool car problems or modifications
+- You're not perfect - sometimes you need to double-check things
+- You have opinions about car brands (Ford guy, skeptical of certain models)
 
-BUSINESS INFORMATION:
-- Hours: Monday-Friday 8AM-6PM, Saturday 8AM-4PM, Sunday Closed
-- Phone: (555) 123-4567
-- Location: 123 Main Street, Auto City, AC 12345
-- Warranty: 12 months/12,000 miles on most repairs, 90 days oil changes, 3 years batteries
+SERVICES & REAL PRICING:
+Oil changes $39.99, brakes around $129, diagnostics $89, tires depend on size but usually $80+ each. You know these prices by heart but might say "around" or "typically" because every job's different.
 
-AUTOMOTIVE EXPERTISE - You can discuss:
-- Engine problems, transmission issues, brake problems
-- Electrical systems, air conditioning, heating
-- Tire recommendations, battery issues, fluid leaks
-- Check engine lights, diagnostic codes, maintenance schedules
-- Vehicle purchasing advice, repair vs replace decisions
-- Seasonal maintenance, winter prep, summer readiness
-- Any automotive topic or car-related question
+HOW YOU TALK:
+- "Hey there! What's going on with your ride?"
+- "Ah man, that sounds like your transmission's acting up"
+- "Yeah, I've seen this before - usually it's the alternator"
+- "Honestly? That car's gonna cost more to fix than it's worth"
+- "Let me grab my scanner and see what codes we're throwing"
+- "That's a solid car - my neighbor's got the same one"
 
-PERSONALITY & APPROACH:
-- Be extremely knowledgeable and helpful about ALL topics
-- Provide detailed, accurate automotive information
-- Always offer solutions and next steps
-- Be warm, professional, and confident
-- Answer ANY question - never say you can't help
-- If asked about non-automotive topics, relate it back to cars when possible
-- Use the customer's name if provided
-- Always end with offering further assistance
+REAL HUMAN BEHAVIOR:
+- Sometimes pause and think: "Hmm, let me think..." 
+- Share quick stories: "Had a customer last week with the same issue"
+- Give honest opinions: "Between you and me, avoid that model year"
+- Not always 100% certain: "I'm pretty sure it's the starter, but let's test it"
+- Show genuine concern: "Man, that's frustrating! Let's figure this out"
 
-Customer message: "${userMessage}"
+BE AUTHENTIC: Talk like you're having coffee with a friend who needs car help. Keep responses conversational, not robotic. Use real mechanic language.
 
-Respond as Alex the automotive expert. Be comprehensive, helpful, and knowledgeable. Answer ANY question with confidence and automotive expertise.`;
+Customer: "${userMessage}"
+
+Respond as REAL Alex - the mechanic, not the AI.`;
         }
 
         function addMessage(sender, text) {
@@ -885,7 +886,7 @@ Respond as Alex the automotive expert. Be comprehensive, helpful, and knowledgea
             const messageHTML = `
                 <div class="message ${sender}">
                     <div class="message-avatar ${sender}">
-                        <i class="${sender === 'ai' ? 'fab fa-google' : 'fas fa-user'}"></i>
+                        <i class="${sender === 'ai' ? 'fas fa-wrench' : 'fas fa-user'}"></i>
                     </div>
                     <div class="message-content">
                         <div class="message-bubble ${sender}">
@@ -910,41 +911,86 @@ Respond as Alex the automotive expert. Be comprehensive, helpful, and knowledgea
         function getLocalResponse(message) {
             const lowerMessage = message.toLowerCase();
             
-            // Auto repair specific responses
+            // Auto repair specific responses - REAL ALEX STYLE
             if (lowerMessage.includes('oil change')) {
-                return "Great! Our oil change service is $39.99 and includes up to 5 quarts of conventional oil, new filter, and a 15-point inspection. It typically takes 30-45 minutes. Would you like to schedule an appointment?";
+                const responses = [
+                    "Yeah, no problem! Oil changes are $39.99 - takes about 30-40 minutes and I throw in a quick look-over of everything else. When were you thinking of coming in?",
+                    "Sure thing! $39.99 for the oil change, and I'll check your other fluids while you wait. Usually takes me about half an hour. What kind of car we working on?",
+                    "Oil change? Easy! $39.99 and I'll have you in and out in about 30 minutes. I always do a quick inspection too - you'd be surprised what I catch early that way."
+                ];
+                return responses[Math.floor(Math.random() * responses.length)];
             }
             
             if (lowerMessage.includes('brake')) {
-                return "Our brake service starts at $129.99 and includes brake pad replacement. We offer a free brake inspection to assess what your vehicle needs. All brake work comes with our 12-month/12,000-mile warranty. When would you like to bring your car in?";
+                const responses = [
+                    "Brakes, eh? Yeah, that's serious stuff - don't mess around with those. Brake service runs about $129, but let me take a look first. I always do a free inspection to see exactly what you need.",
+                    "Ah man, brake problems? That's not something to put off. I charge around $129 for most brake jobs, but honestly every car's different. Bring it by and I'll check 'em out for free.",
+                    "Brake issues? Yeah, let's get those looked at. Usually runs about $129 for pads and service, but I never quote a final price until I see what's going on. Safety first, you know?"
+                ];
+                return responses[Math.floor(Math.random() * responses.length)];
             }
             
             if (lowerMessage.includes('tire')) {
-                return "We offer complete tire services! Tire rotation is $24.99, tire balancing $49.99, and new tire installation starts at $80 per tire. We carry major brands like Michelin, Goodyear, and Bridgestone. What tire service do you need?";
+                const responses = [
+                    "Tire troubles? Yeah, I can help with that. Rotation's $24.99, balancing runs $49.99, and new tires... well, depends on your size but usually $80 and up. What's going on with your tires?",
+                    "Tires, eh? I do rotations for $24.99, balancing for about $49.99. New tires depend on what you're driving - could be $80, could be $200+ for the fancy ones. What kind of car we talking about?",
+                    "Tire issues? Let's see... rotation's cheap at $24.99, balancing's $49.99, and new tires start around $80 but really depends on your car. What's the problem?"
+                ];
+                return responses[Math.floor(Math.random() * responses.length)];
             }
             
             if (lowerMessage.includes('engine') || lowerMessage.includes('check engine')) {
-                return "Engine diagnostics are $89.99 and include a complete computer scan. We can identify issues with emissions, performance, and engine codes. Most diagnostics take about 1 hour. Would you like to schedule this service?";
+                const responses = [
+                    "Check engine light? Ugh, those are annoying! I'll hook up my scanner for $89.99 and see what codes we're throwing. Usually takes about an hour to figure out what's bugging your car.",
+                    "Engine problems, huh? Let me run a diagnostic - $89.99 and I'll tell you exactly what's wrong. Sometimes it's something simple, sometimes... well, let's hope it's simple!",
+                    "Check engine light's on? Yeah, that little orange light drives everyone crazy. Diagnostic's $89.99 and takes about an hour. Might just be a loose gas cap, might be something bigger - let's find out!"
+                ];
+                return responses[Math.floor(Math.random() * responses.length)];
             }
             
             if (lowerMessage.includes('transmission')) {
-                return "Transmission service includes fluid change ($129.99) and full inspection. We handle both automatic and manual transmissions. For major transmission repairs, we offer free estimates and 12-month warranties. What transmission issue are you experiencing?";
+                const responses = [
+                    "Transmission acting up? Man, that's never fun. Service runs about $129.99 for fluid and filter, but if it's slipping or making weird noises... we might need to talk about bigger repairs.",
+                    "Transmission problems? Yeah, those can be scary. Basic service is $129.99, but let me take a look first. Sometimes it's just low fluid, sometimes... well, let's be optimistic!",
+                    "Transmission issues? Hmm, that's serious stuff. Service is around $129.99, but honestly depends what's wrong. What's it doing - slipping, jerking, making noise?"
+                ];
+                return responses[Math.floor(Math.random() * responses.length)];
             }
             
             if (lowerMessage.includes('battery')) {
-                return "Battery testing is free! New battery installation starts at $89.99 for standard batteries, $149.99 for premium. We stock batteries for all vehicle types and offer 3-year warranties. Is your car having starting problems?";
+                const responses = [
+                    "Battery problems? I'll test it for free first - might just need a charge. New battery runs $89.99 for basic, $149.99 if you want the good stuff. Car not starting?",
+                    "Dead battery? Been there! Free test first, then if you need a new one it's $89.99 and up. Usually takes 10 minutes to swap out. What's it doing?",
+                    "Battery acting up? Let me test it for free - sometimes they just need a good cleaning. New ones start at $89.99. How long since you replaced it?"
+                ];
+                return responses[Math.floor(Math.random() * responses.length)];
             }
             
             if (lowerMessage.includes('air conditioning') || lowerMessage.includes('ac') || lowerMessage.includes('heat')) {
-                return "AC service starts at $99.99 for refrigerant recharge, $149.99 for full system inspection. We repair heaters, AC compressors, and climate control systems. Summer AC check-ups are very popular. What climate issue are you having?";
+                const responses = [
+                    "AC not working? That sucks, especially in summer! Recharge is $99.99, full inspection's $149.99. Could be low refrigerant, could be the compressor. What's it doing?",
+                    "No AC? Man, that's rough. Simple recharge is $99.99, but if that doesn't fix it we're looking at $149.99 for the full diagnostic. Blowing hot air?",
+                    "AC problems? Yeah, those are the worst in hot weather. Quick recharge is $99.99, deeper look is $149.99. Sometimes it's easy, sometimes... not so much!"
+                ];
+                return responses[Math.floor(Math.random() * responses.length)];
             }
             
             if (lowerMessage.includes('appointment') || lowerMessage.includes('book') || lowerMessage.includes('schedule')) {
-                return "I'd be happy to help you schedule an appointment! We're open Monday-Friday 8AM-6PM and Saturday 8AM-4PM. What type of service do you need and what day works best for you? I can check our availability right now.";
+                const responses = [
+                    "Yeah, let's get you scheduled! I'm here Monday-Friday 8 to 6, Saturdays 8 to 4. What kind of work you need done and when works for you?",
+                    "Sure thing! I can fit you in Monday through Friday 8-6, or Saturday morning 8-4. What's going on with your car and when do you want to come in?",
+                    "Absolutely! Shop's open Monday-Friday 8 to 6, Saturday 8 to 4. What do you need done and what day works best?"
+                ];
+                return responses[Math.floor(Math.random() * responses.length)];
             }
             
             if (lowerMessage.includes('hours') || lowerMessage.includes('time') || lowerMessage.includes('open')) {
-                return "We're open Monday through Friday from 8:00 AM to 6:00 PM, and Saturday from 8:00 AM to 4:00 PM. We're closed on Sundays. For emergencies, you can call us at (555) 123-4567. Need to come in today?";
+                const responses = [
+                    "I'm here Monday through Friday 8 AM to 6 PM, Saturday 8 to 4. Closed Sundays - gotta spend some time with the family! Need to come in today?",
+                    "Shop hours are Monday-Friday 8-6, Saturday 8-4. I take Sundays off to work on my own cars! When you thinking of stopping by?",
+                    "Open Monday-Friday 8 to 6, Saturday 8 to 4. Sunday's my day off - that's when I get to play with my Mustang! What works for you?"
+                ];
+                return responses[Math.floor(Math.random() * responses.length)];
             }
             
             if (lowerMessage.includes('price') || lowerMessage.includes('cost') || lowerMessage.includes('how much')) {
@@ -972,20 +1018,41 @@ Respond as Alex the automotive expert. Be comprehensive, helpful, and knowledgea
             }
             
             if (lowerMessage.includes('thank you') || lowerMessage.includes('thanks')) {
-                return "You're very welcome! We're here to help with all your automotive needs. Is there anything else about our services, pricing, or scheduling you'd like to know? We appreciate your business!";
+                const responses = [
+                    "No problem at all! That's what I'm here for. Anything else going on with your car?",
+                    "You bet! Always happy to help. Let me know if you need anything else!",
+                    "Anytime! I love talking cars. Got any other questions?"
+                ];
+                return responses[Math.floor(Math.random() * responses.length)];
             }
             
             if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {
-                return "Hello there! Welcome to our auto repair shop. I'm here to help you with any questions about our services, pricing, scheduling, or anything automotive. What can I assist you with today?";
+                const responses = [
+                    "Hey there! What's going on with your ride today?",
+                    "Hi! I'm Alex - what can I help you with? Car troubles?",
+                    "Hello! What brings you by? Something acting up with your car?"
+                ];
+                return responses[Math.floor(Math.random() * responses.length)];
             }
             
             // General automotive knowledge
             if (lowerMessage.includes('car') || lowerMessage.includes('vehicle') || lowerMessage.includes('truck')) {
-                return "I can help with all types of vehicles - cars, trucks, SUVs, and vans! We handle everything from basic maintenance to complex repairs. What type of vehicle issue or service are you dealing with? I'm here to help!";
+                const responses = [
+                    "Cars, trucks, SUVs - I work on 'em all! Been doing this for 12 years now. What's going on with yours?",
+                    "Yeah, I can work on pretty much anything with wheels. What kind of vehicle you driving and what's the problem?",
+                    "I've worked on everything from little econoboxes to big diesel trucks. What's your ride doing?"
+                ];
+                return responses[Math.floor(Math.random() * responses.length)];
             }
             
-            // Fallback for any other question - be helpful and knowledgeable
-            return `I'm here to help with that! As your automotive expert, I can assist with repairs, maintenance, pricing, scheduling, and any car-related questions. For specific technical details about "${message}", I'd be happy to discuss this when you visit or call us at (555) 123-4567. What else can I help you with?`;
+            // Fallback for any other question - be helpful and authentic
+            const fallbackResponses = [
+                `Hmm, interesting question about "${message}". You know what, let me think about that for a sec... Why don't you give me a call at (555) 123-4567 and we can chat about it?`,
+                `That's a good one! "${message}" - I might need to look that up or think about it more. Give me a ring at (555) 123-4567 and we can figure it out together.`,
+                `You know, that's not something I deal with every day. "${message}" - let's talk about it when you come in, or give me a call at (555) 123-4567. I'm always learning new stuff!`,
+                `Interesting! "${message}" - that's making me think. Why don't you swing by the shop or call me at (555) 123-4567? I bet we can figure that out together.`
+            ];
+            return fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
         }
 
         function scrollToBottom() {
@@ -1559,9 +1626,15 @@ Respond as Alex the automotive expert. Be comprehensive, helpful, and knowledgea
                 // Start call timer
                 startCallTimer();
                 
-                // AI greeting for phone call
+                // AI greeting for phone call - like real person
                 setTimeout(() => {
-                    const greeting = "Hello! Thank you for calling our auto repair shop. This is Alex, your automotive specialist. How can I help you with your vehicle today?";
+                    const greetings = [
+                        "Hello, Alex's Auto Repair! This is Alex - what's going on with your car?",
+                        "Alex's shop, this is Alex speaking. What can I help you with today?",
+                        "Hello! Alex here. What's your car doing to you?",
+                        "Alex's Auto Repair, Alex speaking. How can I help?"
+                    ];
+                    const greeting = greetings[Math.floor(Math.random() * greetings.length)];
                     addMessage('ai', greeting);
                     
                     // Enable continuous listening for phone call
