@@ -21,6 +21,8 @@ body {
     overflow-x: hidden;
     width: 100%;
     max-width: 100vw;
+    font-size: 16px;
+    zoom: 1.1;
 }
 
 .container {
@@ -172,7 +174,7 @@ body {
 }
 
 .hero-text h1 {
-    font-size: 3.5rem;
+    font-size: 4rem;
     font-weight: 900;
     line-height: 1.1;
     margin-bottom: 1.5rem;
@@ -187,10 +189,11 @@ body {
 }
 
 .hero-subtitle {
-    font-size: 1.25rem;
+    font-size: 1.4rem;
     margin-bottom: 2rem;
     opacity: 0.9;
     line-height: 1.6;
+    font-weight: 500;
 }
 
 .google-features {
@@ -205,10 +208,11 @@ body {
     gap: 0.75rem;
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(10px);
-    padding: 1rem;
+    padding: 1.2rem;
     border-radius: 12px;
     font-weight: 600;
     border: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 1.1rem;
 }
 
 .google-feature i {
@@ -226,10 +230,10 @@ body {
     gap: 1rem;
     background: linear-gradient(135deg, #4285f4, #34a853);
     color: white;
-    padding: 1.25rem 2.5rem;
+    padding: 1.4rem 3rem;
     border: none;
     border-radius: 12px;
-    font-size: 1.25rem;
+    font-size: 1.4rem;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -255,8 +259,9 @@ body {
 
 .real-note {
     margin-top: 1rem;
-    font-size: 1rem;
+    font-size: 1.1rem;
     opacity: 0.9;
+    font-weight: 500;
 }
 
 /* Real AI Demo */
@@ -796,15 +801,16 @@ body {
 }
 
 .setup-header h2 {
-    font-size: 2.5rem;
+    font-size: 3rem;
     font-weight: 800;
     color: #1e40af;
     margin-bottom: 1rem;
 }
 
 .setup-header p {
-    font-size: 1.25rem;
+    font-size: 1.4rem;
     color: #64748b;
+    font-weight: 500;
 }
 
 .setup-steps {
@@ -1011,15 +1017,16 @@ body {
 }
 
 .section-header h2 {
-    font-size: 2.5rem;
+    font-size: 3rem;
     font-weight: 800;
     color: #1e40af;
     margin-bottom: 1rem;
 }
 
 .section-header p {
-    font-size: 1.25rem;
+    font-size: 1.4rem;
     color: #64748b;
+    font-weight: 500;
 }
 
 .features-showcase {
@@ -1123,15 +1130,16 @@ body {
 }
 
 .pricing-header h2 {
-    font-size: 2.5rem;
+    font-size: 3rem;
     font-weight: 800;
     color: #1e40af;
     margin-bottom: 1rem;
 }
 
 .pricing-header p {
-    font-size: 1.25rem;
+    font-size: 1.4rem;
     color: #64748b;
+    font-weight: 500;
 }
 
 .pricing-options {
@@ -1571,6 +1579,37 @@ body {
     
     .pricing-header h2 {
         font-size: 2rem;
+    }
+}
+
+/* Chrome Desktop Specific Fixes */
+@media (min-width: 769px) {
+    body {
+        zoom: 1.15 !important;
+        transform: scale(1.05);
+        transform-origin: top center;
+    }
+    
+    .container {
+        max-width: 1400px;
+    }
+    
+    .hero-text h1 {
+        font-size: 4.5rem !important;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.5rem !important;
+    }
+    
+    .google-feature {
+        font-size: 1.2rem !important;
+        padding: 1.4rem !important;
+    }
+    
+    .real-ai-cta {
+        font-size: 1.5rem !important;
+        padding: 1.5rem 3.5rem !important;
     }
 }
 
